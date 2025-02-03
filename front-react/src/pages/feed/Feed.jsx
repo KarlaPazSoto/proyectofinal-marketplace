@@ -1,10 +1,23 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 const Feed = () => {
   return (
     <div>
     <h1>My Posts</h1>
+    <div className="col d-flex  justify-content-center">
+          <Link to='/create-post'>
+            <button className="btn btn-primary" type="button">
+                boton pa agregar post
+            </button>
+          </Link>
+          <Link to='/create-post'>
+          <button className="btn btn-primary" type="button">
+            boton pa editar post existente
+          </button>
+          </Link>
+        </div>
     <div className="container-fluid justify-content-center">
     <div className="card" style={{ width: "18rem" }}>
       <img
