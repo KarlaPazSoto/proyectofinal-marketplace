@@ -1,3 +1,22 @@
 .btn{
-    background-color: #1E5830;
+    background-color: #222426 !important;
+    border-color: #C5B5AA !important;
+}
+
+/* .btn-2{
+    background-color: #ffffff !important;
+    border-color: #24211F !important;
+    color: #24211F !important;
+} */
+
+.btn:hover{
+    background-color: #727273 !important;
+    border-color: #C5B5AA !important;
+}
+.navbar, .footer{
+    background-color: #DB185A!important;
+}
+
+.navbar-brand, .nav-link{
+    color: #fffcf9 !important;
 }

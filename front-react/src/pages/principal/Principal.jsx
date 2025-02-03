@@ -1,5 +1,4 @@
 import React from "react";
-import "../../styles/colores.css";
 import { Link } from "react-router-dom";
 
 const Principal = () => {

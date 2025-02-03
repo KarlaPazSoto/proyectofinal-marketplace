@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <div>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
           <Link  to="/principal" className="navbar-brand">
             Navbar
@@ -29,7 +29,7 @@ const Navbar = () => {
               <Link to="/profile" className="nav-link">
                 Profile
               </Link>
-              <Link to="/" className="nav-link">
+              <Link to="/principal" className="nav-link">
                 Cerrar Sesión
               </Link>
             </div>

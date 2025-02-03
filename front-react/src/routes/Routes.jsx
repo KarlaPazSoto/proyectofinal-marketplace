@@ -5,6 +5,7 @@ import About from '../pages/about/About';
 import Register from '../pages/register/Register';
 import Login from '../pages/login/Login';
 import Profile from '../pages/profile/Profile';
+import Feed from '../pages/feed/Feed';
 import CreatePost from '../pages/createPost/CreatePost';
 import Gallery from '../pages/gallery/Gallery';
 import PostDetails from '../pages/postDetails/PostDetails';
@@ -19,6 +20,7 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/feed" element={<Feed />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/post-details" element={<PostDetails />} />
