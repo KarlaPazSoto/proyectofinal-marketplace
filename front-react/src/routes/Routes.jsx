@@ -13,6 +13,7 @@ import Pagination from '../components/Pagination';
 import PostDetails from '../pages/postDetails/PostDetails';
 import Principal from '../pages/principal/Principal';
 import Cart from '../components/Cart';
+import Carousel from '../components/Carousel';
 
 
 function AppRoutes() {
@@ -25,6 +26,7 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/carousel" element={<Carousel />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/card" element={<Card />} />

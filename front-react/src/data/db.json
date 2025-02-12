@@ -22,7 +22,7 @@
             "description": "Laptop con procesador i7 y tarjeta gráfica dedicada",
             "price": 1500,
             "stock": 10,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=1"
         },
         {
             "id": 2,
@@ -30,7 +30,7 @@
             "description": "Teclado RGB con switches rojos",
             "price": 100,
             "stock": 25,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=2"
         },
         {
             "id": 3,
@@ -38,7 +38,7 @@
             "description": "Mouse ergonómico con sensor óptico avanzado",
             "price": 50,
             "stock": 30,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=3"
         },
         {
             "id": 4,
@@ -46,7 +46,7 @@
             "description": "Monitor Full HD con 144Hz de refresco",
             "price": 300,
             "stock": 15,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=4"
         },
         {
             "id": 5,
@@ -54,7 +54,7 @@
             "description": "Silla ergonómica con soporte lumbar",
             "price": 200,
             "stock": 20,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=5"
         },
         {
             "id": 6,
@@ -62,7 +62,7 @@
             "description": "Auriculares con cancelación de ruido y micrófono",
             "price": 120,
             "stock": 40,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=6"
         },
         {
             "id": 7,
@@ -70,7 +70,7 @@
             "description": "Unidad de estado sólido NVMe de alta velocidad",
             "price": 180,
             "stock": 35,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=7"
         },
         {
             "id": 8,
@@ -78,7 +78,7 @@
             "description": "Procesador de alto rendimiento para gaming y trabajo",
             "price": 350,
             "stock": 12,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=8"
         },
         {
             "id": 9,
@@ -86,7 +86,7 @@
             "description": "Tarjeta gráfica con 12GB de VRAM GDDR6",
             "price": 500,
             "stock": 8,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=9"
         },
         {
             "id": 10,
@@ -94,7 +94,7 @@
             "description": "Fuente de poder certificada 80 Plus Gold",
             "price": 110,
             "stock": 22,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=10"
         },
         {
             "id": 11,
@@ -102,7 +102,7 @@
             "description": "Gabinete con vidrio templado y RGB",
             "price": 90,
             "stock": 18,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=11"
         },
         {
             "id": 12,
@@ -110,7 +110,7 @@
             "description": "Módulo de memoria DDR4 de alta velocidad",
             "price": 75,
             "stock": 50,
-            "img": "https://via.placeholder.com/150"
+            "img": "https://picsum.photos/300/200?random=12"
         }
     ]
 }

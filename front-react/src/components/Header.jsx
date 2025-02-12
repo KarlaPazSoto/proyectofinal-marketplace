@@ -1,10 +1,11 @@
 import React from 'react'
+import Carousel from './Carousel'
 
 const Header = () => {
   return (
     <div>
       <div className='text-center'>
-        <p>este es el header pero no se si sea necesario </p>
+        <Carousel />
       </div>
     </div>
   )
