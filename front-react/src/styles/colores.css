@@ -1,6 +1,6 @@
 .btn{
-    background-color: #222426 !important;
-    border-color: #C5B5AA !important;
+    background-color: #004D40 !important;
+    border-color: #E0E0E0 !important;
 }
 
 /* .btn-2{
@@ -10,13 +10,13 @@
 } */
 
 .btn:hover{
-    background-color: #727273 !important;
-    border-color: #C5B5AA !important;
+    background-color: #FF5722 !important;
+    border-color: #E0E0E0 !important;
 }
 .navbar, .footer{
-    background-color: #DB185A!important;
+    background-color: #E0E0E0!important;
 }
 
 .navbar-brand, .nav-link{
-    color: #fffcf9 !important;
+    color: #030105 !important;
 }
