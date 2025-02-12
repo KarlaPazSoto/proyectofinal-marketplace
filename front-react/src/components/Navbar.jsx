@@ -32,6 +32,9 @@ const Navbar = () => {
               <Link to="/principal" className="nav-link">
                 Cerrar Sesión
               </Link>
+              <Link to="/cart" className="nav-link">
+                Carrito
+              </Link>
             </div>
           </div>
         </div>

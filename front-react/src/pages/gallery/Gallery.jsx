@@ -1,8 +1,13 @@
 import React from 'react'
 
+import Card from '../../components/Card'
+
 const Gallery = () => {
   return (
-    <div>Gallery</div>
+    <div>
+        <h1>probando importaciopn</h1>
+        <Card />
+    </div>
   )
 }
 

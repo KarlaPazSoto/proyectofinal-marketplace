@@ -8,8 +8,12 @@ import Profile from '../pages/profile/Profile';
 import Feed from '../pages/feed/Feed';
 import CreatePost from '../pages/createPost/CreatePost';
 import Gallery from '../pages/gallery/Gallery';
+import Card from '../components/Card';
+import Pagination from '../components/Pagination';
 import PostDetails from '../pages/postDetails/PostDetails';
 import Principal from '../pages/principal/Principal';
+import Cart from '../components/Cart';
+
 
 function AppRoutes() {
   return (
@@ -20,8 +24,11 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/card" element={<Card />} />
+        <Route path="/pagination" element={<Pagination />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/post-details" element={<PostDetails />} />
     </Routes>
