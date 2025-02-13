@@ -1,19 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
+import logo from "../assets/img/logo-horizontal.png";
+
 
 const Navbar = () => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg custom-navbar">
         <div className="container-fluid">
-<<<<<<< HEAD
           <Link  to="/principal" className="navbar-brand col-1">
             <img src="src\assets\img\tradz-logo.png" alt="" className="img-fluid"/>
-=======
+          </Link>
           <Link to="/" className="navbar-brand me-auto">
-            Navbar
->>>>>>> 61c30fba29d141925f937e5b3926d9c75e2b3254
+            <img src={logo} alt="logo" className="logo-navbar ms-4" />
           </Link>
           <button
             className="navbar-toggler"
