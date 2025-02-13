@@ -1,5 +1,6 @@
 import React from 'react'
 import Carousel from './Carousel'
+import Categorys from './Categorys';
 
 const Header = () => {
   return (
@@ -7,6 +8,7 @@ const Header = () => {
       <div className='text-center'>
         <Carousel />
       </div>
+      <Categorys />
     </div>
   )
 }
