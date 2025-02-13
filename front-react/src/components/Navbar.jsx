@@ -9,9 +9,6 @@ const Navbar = () => {
     <div>
       <nav className="navbar navbar-expand-lg custom-navbar">
         <div className="container-fluid">
-          <Link  to="/principal" className="navbar-brand col-1">
-            <img src="src\assets\img\tradz-logo.png" alt="" className="img-fluid"/>
-          </Link>
           <Link to="/" className="navbar-brand me-auto">
             <img src={logo} alt="logo" className="logo-navbar ms-4" />
           </Link>
