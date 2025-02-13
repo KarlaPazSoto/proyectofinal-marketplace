@@ -7,8 +7,8 @@ const Navbar = () => {
     <div>
       <nav className="navbar navbar-expand-lg">
         <div className="container-fluid">
-          <Link  to="/principal" className="navbar-brand">
-            Navbar
+          <Link  to="/principal" className="navbar-brand col-1">
+            <img src="src\assets\img\tradz-logo.png" alt="" className="img-fluid"/>
           </Link>
           <button
             className="navbar-toggler"
