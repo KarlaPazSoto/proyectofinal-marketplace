@@ -1,5 +1,6 @@
 import React from "react";
 import data from '../data/db.json'
+import "../styles/Carousel.css";
 
 const Carousel = () => {
   return (
@@ -10,7 +11,7 @@ const Carousel = () => {
           data-bs-ride="carousel"
           data-bs-interval="2000"
         >
-          <div className="carousel-inner">
+          <div className="carousel-inner carousel-image">
           {data.products.map((product, index) => (
                         <div key={product.id} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                           <img
