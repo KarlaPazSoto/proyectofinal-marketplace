@@ -1,0 +1,9 @@
+.carousel-image{
+    height: 400px;
+}
+
+.carousel-image img{
+    height: 100%;
+    object-fit: cover; /* para que la imagen se ajuste al tamaño de la caja */
+}
+

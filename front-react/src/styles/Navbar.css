@@ -1,0 +1,15 @@
+.custom-navbar{
+    background: #030105 !important;
+}
+
+.custom-navbar .navbar-brand{
+    color: #FFFFFA !important;
+}
+
+.custom-navbar .navbar-nav .nav-link{
+    color: #FFFFFA !important;
+}
+
+.custom-navbar .navbar-nav .nav-link:hover{
+    color: #FF5722 !important;
+}
