@@ -16,7 +16,7 @@ function App() {
       <div className="d-flex flex-column min-vh-100 all-body">
         <Navbar />
         <main className="flex-grow-1">
-          {/* <Header /> */}
+          <Header />
           <AppRoutes />
         </main>
         <Footer />

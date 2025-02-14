@@ -51,6 +51,9 @@ const Navbar = () => {
               <Link to="/principal" className="nav-link">
                 Cerrar Sesión
               </Link>
+              <Link to="/principal" className="nav-link">
+                Principal
+              </Link>
             </div>
           </div>
         </div>

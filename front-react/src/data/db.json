@@ -3,16 +3,9 @@
         {
             "id": 1,
             "name": "Juan Perez",
-            "correo": "juan.perez@example.com",
-            "direccion": "Calle Falsa 123, Ciudad",
-            "telefono": "1234567890"
-        },
-        {
-            "id": 2,
-            "name": "Maria Gomez",
-            "correo": "maria.gomez@example.com",
-            "direccion": "Avenida Siempre Viva 742, Ciudad",
-            "telefono": "0987654321"
+            "email": "juan.perez@example.com",
+            "adress": "Calle Falsa 123, Ciudad",
+            "phone": "1234567890"
         }
     ],
     "products": [

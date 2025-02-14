@@ -1,20 +1,25 @@
-const UserInfo = ({ email, phone, address }) => {
+import React from 'react'
+import data from '../../data/db.json'
+  
+  const UserInfo = () => {
     return (
-      <div className="user-info mb-4">
+      <div>
+              <div className="user-info mb-4">
         <div className="info-item">
           <h4>Correo electrónico</h4>
-          <p>{email || 'No especificado'}</p>
+          <p>{data.users.email}</p>
         </div>
         <div className="info-item">
           <h4>Teléfono</h4>
-          <p>{phone || 'No especificado'}</p>
+          <p>{data.users.phone}</p>
         </div>
         <div className="info-item">
           <h4>Dirección</h4>
-          <p>{address || 'No especificada'}</p>
+          <p>{data.users.adress}</p>
         </div>
       </div>
-    );
-  };
+      </div>
+    )
+  }
   
-  export default UserInfo;
+  export default UserInfo
