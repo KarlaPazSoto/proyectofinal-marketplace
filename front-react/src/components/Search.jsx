@@ -1,5 +1,5 @@
-import { Form, Button } from 'react-bootstrap';
-import '../styles/Search.css';
+import { Form, Button } from "react-bootstrap";
+import "../styles/Search.css";
 
 const Search = () => {
   return (
@@ -9,10 +9,7 @@ const Search = () => {
         placeholder="Buscar productos en Tradz..."
         className="me-2 search-bar"
       />
-      <Button 
-        variant="primary" 
-        className="me-2 search-button"
-      >
+      <Button variant="primary" className="me-2 search-button">
         Buscar
       </Button>
     </div>

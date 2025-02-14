@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
 import { FaLaptop, FaGamepad, FaMobileAlt, FaHeadphones, FaCamera, FaTabletAlt } from 'react-icons/fa';
+import '../styles/Categorys.css';
 
 const Categorys = () => {
   const categories = [
@@ -14,20 +14,20 @@ const Categorys = () => {
   ];
 
   return (
-    <Container fluid className="border-bottom py-3">
-      <Row className="justify-content-center">
+    <nav className="categories-nav">
+      <ul className="categories-list">
         {categories.map((category, index) => (
-          <Col key={index} xs={4} sm={4} md={2} className="text-center mb-3">
-            <Link to={category.path} className="text-decoration-none text-dark">
-              <div className="d-flex flex-column align-items-center">
+          <li key={index} className="category-item">
+            <Link to={category.path} className="category-link">
+              <div className="category-content">
                 {category.icon}
-                <span className="mt-2">{category.name}</span>
+                <span>{category.name}</span>
               </div>
             </Link>
-          </Col>
+          </li>
         ))}
-      </Row>
-    </Container>
+      </ul>
+    </nav>
   );
 };
 
