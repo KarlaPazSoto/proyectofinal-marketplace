@@ -1,33 +1,57 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Row, Col, Container } from 'react-bootstrap';
+import ProfileImage from './/ProfileImage';
+import UserInfo from './UserInfo';
+import ProfileActions from './ProfileActions';
+import ProfileSwitch from './ProfileSwitch';
 
 const Profile = () => {
-  return (
-    <div className='container col-4'>
-      <div>
-        <h2>Mi perfil</h2>
-        <h4>Nombre</h4>
-        <p>correo</p>
-        <p>direccion</p>
-        <p>telefono</p>
-      </div>
-      <div className='d-flex flex-column'>
-          <Link to='/feed'>
-          <button className="btn btn-primary" type="button">
-            Mis publicaciones
-          </button>
-          </Link>
-          <Link>
-          <button className='btn btn-primary' type='button'>Editar perfil</button>
-          </Link>
-          <Link to='/principal'>
-          <button className="btn btn-primary" type="button">
-            Cerrar sesión
-          </button>
-          </Link>
-      </div>
-    </div>
-  )
-}
+  const [isSellerProfile, setIsSellerProfile] = useState(false);
 
-export default Profile
+  // Aquí podrías agregar un estado o llamada a API para obtener los datos del usuario
+  const userData = {
+    name: 'Nombre del Usuario',
+    email: 'correo@ejemplo.com',
+    phone: '+56 9 1234 5678',
+    address: 'Dirección del usuario',
+    profileImage: '/ruta-a-imagen-perfil.jpg'
+  };
+
+  const handleProfileChange = (e) => {
+    setIsSellerProfile(e.target.checked);
+  };
+
+  return (
+    <Container>
+      <div className="position-relative">
+        <ProfileSwitch 
+          isSellerProfile={isSellerProfile}
+          onChange={handleProfileChange}
+        />
+        
+        <Row className="justify-content-center">
+          <Col md={8} lg={6}>
+            <div className="profile-container text-center p-4">
+              <ProfileImage 
+                src={userData.profileImage}
+                alt={userData.name}
+              />
+              
+              <h2 className="mb-4">{userData.name}</h2>
+
+              <UserInfo 
+                email={userData.email}
+                phone={userData.phone}
+                address={userData.address}
+              />
+
+              <ProfileActions />
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </Container>
+  );
+};
+
+export default Profile;

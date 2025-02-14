@@ -1,0 +1,30 @@
+.profile-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 2rem;
+  }
+  
+  .info-item {
+    margin-bottom: 1rem;
+  }
+  
+  .info-item h4 {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .info-item p {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .profile-actions {
+    margin-top: 2rem;
+  }
+  
+  .profile-image-container img {
+    border: 3px solid #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }

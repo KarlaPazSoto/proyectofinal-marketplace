@@ -14,6 +14,7 @@ import PostDetails from '../pages/postDetails/PostDetails';
 import Principal from '../pages/principal/Principal';
 import Cart from '../components/Cart';
 import Carousel from '../components/Carousel';
+import Header from '../components/Header';
 
 
 function AppRoutes() {
@@ -24,6 +25,7 @@ function AppRoutes() {
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/header" element={<Header />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/carousel" element={<Carousel />} />
