@@ -5,7 +5,7 @@ import Card from '../../components/Card'
 const Gallery = () => {
   return (
     <div>
-        <h1>probando importaciopn</h1>
+        <h1 className='ms-5 mt-5'>Todos los productos</h1>
         <Card />
     </div>
   )

@@ -1,18 +1,21 @@
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
+import '../styles/Search.css';
 
 const Search = () => {
   return (
-    <Row className="justify-content-center m-0">
-      <Col className="d-flex p-0">
-        <Form.Control
-          type="search"
-          placeholder="Buscar productos..."
-          className="me-2"
-        />
-        <Button variant="primary" className="me-2">Buscar</Button>
-        <Button variant="outline-secondary">Filtros</Button>
-      </Col>
-    </Row>
+    <div className="d-flex w-100">
+      <Form.Control
+        type="search"
+        placeholder="Buscar productos en Tradz..."
+        className="me-2 search-bar"
+      />
+      <Button 
+        variant="primary" 
+        className="me-2 search-button"
+      >
+        Buscar
+      </Button>
+    </div>
   );
 };
 

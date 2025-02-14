@@ -24,3 +24,6 @@
     border: 3px solid #FF5722 !important; /*Borde del boton hamburguesa*/
 }
 
+/* Media query para computador */
+@media (min-width: 992px) {
+}

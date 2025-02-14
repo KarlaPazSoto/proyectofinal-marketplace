@@ -1,10 +1,9 @@
-
-
-/*Comienza el ex-archivo "Colores"*/
+/*Contenedor de toda la página*/
 .body-all{
-  background: #FFFFFA;
+  background: #FFFFFA; /*Color de fondo de toda la página*/
 }
 
+/*Todos los botones de la página*/
 .btn{
   background-color: #004D40 !important;
   border-color: #E0E0E0 !important;
@@ -16,11 +15,12 @@
   color: #24211F !important;
 } */
 
+/*Hover de todos los botones de la página*/
 .btn:hover{
   background-color: #FF5722 !important;
   border-color: #E0E0E0 !important;
 }
-.navbar, .footer{
+.footer{
   background-color: #E0E0E0!important;
 }
 
