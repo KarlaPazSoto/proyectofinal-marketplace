@@ -1,16 +1,24 @@
-import { Form } from 'react-bootstrap';
+import React from "react";
 
-const ProfileSwitch = ({ isSellerProfile, onChange }) => (
-  <div className="position-absolute top-0 end-0 m-4">
-    <Form.Check 
-      type="switch"
-      id="profile-switch"
-      label={isSellerProfile ? "Perfil Vendedor" : "Perfil Comprador"}
-      checked={isSellerProfile}
-      onChange={onChange}
-      className="profile-switch"
-    />
-  </div>
-);
+const ProfileSwitch = () => {
+  return (
+    <div className="d-flex flex-column align-items-center">
+      <div className="form-check form-switch">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+        />
+
+      </div>
+      <div>
+          <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+            Perfil comprador
+          </label>
+        </div>
+    </div>
+  );
+};
 
 export default ProfileSwitch;

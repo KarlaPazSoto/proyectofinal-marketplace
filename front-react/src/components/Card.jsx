@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import data from '../data/db.json'
+import "../styles/card.css";
 
 const Card = () => {
   const {handleAddToCart} = useContext(CartContext)
@@ -14,31 +15,28 @@ const Card = () => {
   // }));
   return (
     <div>
-          <div className='container-fluid justify-content-evenly row'>
+          <div className='container-fluid justify-content-evenly row lexend_font'>
       {data.products.map((product) => (
         <div key={product.id} className="card col-md-3 p-0 m-3" style={{ width: "18rem" }}>
           <div className="containerCartaImagen">
-            <img src={product.img} className="card-img-top cartaImagen" alt={product.name} />
+            <img src={product.img} className="card-img-top" alt={product.name} />
           </div>
           <div className="card-body">
             <h5 className="card-title">{product.name}</h5>
-            <hr />
             
             <p className="text-center">{product.description}</p>
-            <hr />
             <p className="card-text text-center"><strong>Precio: ${product.price}</strong></p>
-            <hr />
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-evenly">
               <Link to='/post-details'><button className="btn btn-dark">
-                Ver más 👀
+                Ver más
               </button></Link>
-              <button className="btn btn-dark" onClick={() => handleAddToCart(product)}>Añadir 🛒</button>
+              <button className="btn btn-dark" onClick={() => handleAddToCart(product)}>Añadir</button>
             </div>
           </div>
         </div>
       ))}
     </div>
-      probando importacion card
+
       {/* <div className="row">
         {products.map((product) => {
           <div className="col" key={product.id}>

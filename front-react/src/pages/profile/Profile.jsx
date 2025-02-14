@@ -1,50 +1,30 @@
-import React, { useState } from "react";
-import { Row, Col, Container } from "react-bootstrap";
-import ProfileImage from ".//ProfileImage";
-import UserInfo from "./UserInfo";
-import ProfileActions from "./ProfileActions";
-import ProfileSwitch from "./ProfileSwitch";
+import React from 'react'
+import data from '../../data/db.json'
+import { Link } from 'react-router-dom'
+import ProfileActions from './ProfileActions'
+import UserInfo from './UserInfo'
+import ProfileImage from './ProfileImage'
+import ProfileSwitch from './ProfileSwitch'
 
 const Profile = () => {
-  const [isSellerProfile, setIsSellerProfile] = useState(false);
-
-  //Aquí podrías agregar un estado o llamada a API para obtener los datos del usuario
-  const userData = {
-    name: "Nombre del Usuario",
-    email: "correo@ejemplo.com",
-    phone: "+56 9 1234 5678",
-    address: "Dirección del usuario",
-    profileImage: "/ruta-a-imagen-perfil.jpg",
-  };
-
-  const handleProfileChange = (e) => {
-    setIsSellerProfile(e.target.checked);
-  };
 
   return (
-    <Container>
-      <div className="position-relative">
-        <ProfileSwitch
-          isSellerProfile={isSellerProfile}
-          onChange={handleProfileChange}
-        />
-
-        <Row className="justify-content-center">
-          <Col md={8} lg={6}>
-            <div className="profile-container text-center p-4">
-              <ProfileImage src='' alt='' />
-
-              <h2 className="mb-4"></h2>
-
-              <UserInfo />
-
-              <ProfileActions />
-            </div>
-          </Col>
-        </Row>
+    <div>
+      <h1 className='text-center'>Mi perfil</h1>
+      <div className="d-flex justify-content-evenly align-items-center gap-5">
+        <div  className='mt-3'>
+          <ProfileImage />
+        </div>
+        <div>
+          <UserInfo />
+        </div>
+        <div>
+          <ProfileActions />
+        </div>
       </div>
-    </Container>
-  );
-};
+      <ProfileSwitch />
+    </div>
+  )
+}
 
-export default Profile;
+export default Profile

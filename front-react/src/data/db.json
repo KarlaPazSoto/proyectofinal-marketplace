@@ -5,7 +5,8 @@
             "name": "Juan Perez",
             "email": "juan.perez@example.com",
             "adress": "Calle Falsa 123, Ciudad",
-            "phone": "1234567890"
+            "phone": "1234567890",
+            "img": "https://picsum.photos/300/200?random=13"
         }
     ],
     "products": [

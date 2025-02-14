@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 import data from "../data/db.json";
+import "../styles/cart.css";
 
 const Cart = () => {
   const {
@@ -22,7 +23,7 @@ const Cart = () => {
         {cart.length > 0 ? (
           cart.map((product) => (
             <ul key={product.id}>
-              <li>
+              <li className="li_cart">
                 <div className="containerLi d-flex">
                   <div className="d-flex align-items-center col-4">
                     <div
@@ -34,7 +35,7 @@ const Cart = () => {
                       </button>
                     </div>
                     <div className="col-4">
-                      <img src={product.img} alt={product.name} />
+                      <img src={product.img} alt={product.name} className="img-fluid" />
                     </div>
                     <div
                       className="col-4 text-center"
