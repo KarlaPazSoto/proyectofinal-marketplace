@@ -1,18 +1,19 @@
 import { Link } from 'react-router-dom';
+import '../../styles/Profile.css'
 
 const ProfileActions = () => {
   return (
     <div className="d-flex flex-column gap-2 align-items-center">
           <Link to='/edit-profile'>
-          <button className='btn btn-dark'>Editar perfil</button>
+          <button className='btn-actions'>Editar perfil</button>
           </Link>
 
           <Link to='/feed'>
-          <button className='btn btn-dark'>Mis publicaiones</button>
+          <button className='btn-actions'>Mis publicaiones</button>
           </Link>
 
           <Link to='/principal'>
-          <button className='btn btn-dark'>Cerrar sesión</button>
+          <button className='btn-actions'>Cerrar sesión</button>
           </Link>
     </div>
   );

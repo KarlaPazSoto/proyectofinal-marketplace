@@ -9,7 +9,7 @@ import ProfileSwitch from './ProfileSwitch'
 const Profile = () => {
 
   return (
-    <div>
+    <div className='mt-5 mb-5'>
       <h1 className='text-center'>Mi perfil</h1>
       <div className="d-flex justify-content-evenly align-items-center gap-5">
         <div  className='mt-3'>
