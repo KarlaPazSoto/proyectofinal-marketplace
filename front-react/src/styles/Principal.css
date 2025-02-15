@@ -4,8 +4,10 @@
     background-size: cover; /*Tamaño de la imagen*/
     background-position: center; /*Posición de la imagen*/
     background-repeat: no-repeat; /*No se repite la imagen*/
-    height: 100vh; /*Altura de la imagen*/
-    width: 100%; /*Ancho de la imagen*/
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /*Div para organizar el contenido*/
@@ -53,11 +55,11 @@
 
 .about{
     background: #E0E0E0;
-    height: 35rem;
     width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 4rem 2rem;
 }
 
 .about-divs{
