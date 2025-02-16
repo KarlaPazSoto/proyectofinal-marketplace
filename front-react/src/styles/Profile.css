@@ -34,3 +34,42 @@
   box-shadow: 0 0 0 0.25rem rgba(0, 77, 64, 0.25);
 }
 
+/* Media queries para dispositivos móviles */
+@media screen and (max-width: 768px) {
+  .img-perfil {
+    width: 12rem;
+    height: 12rem;
+  }
+
+  .btn-actions {
+    width: 12rem;
+  }
+
+  /* Ajustar el layout principal del Profile */
+  .profile-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  /* Ajustar el tamaño de los textos */
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  /* Ajustar espaciado */
+  .user-info-container {
+    margin: 1rem 0;
+  }
+
+  /* Ajustar botones */
+  .actions-container {
+    width: 100%;
+    align-items: center;
+  }
+}
+
