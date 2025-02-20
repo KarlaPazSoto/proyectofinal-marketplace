@@ -7,6 +7,10 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [tipoUsuario, setTipoUsuario] = useState('');
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
@@ -15,7 +19,7 @@ const Register = () => {
       alert('Las contraseñas no coinciden');
       return;
     }
-    await handleRegister(email, password);
+    await handleRegister(email, password, nombre, telefono, direccion, tipoUsuario);
     navigate('/login');
   };
 
@@ -23,6 +27,18 @@ const Register = () => {
     <div className="container col-4">
       <h2>Registrarse</h2>
       <form onSubmit={onSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Nombre</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Nombre"
+            aria-label="nombre"
+            aria-describedby="basic-addon1"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+        </div>
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
@@ -57,6 +73,42 @@ const Register = () => {
             aria-describedby="basic-addon1"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Teléfono</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Teléfono"
+            aria-label="telefono"
+            aria-describedby="basic-addon1"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Dirección</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Dirección"
+            aria-label="direccion"
+            aria-describedby="basic-addon1"
+            value={direccion}
+            onChange={(e) => setDireccion(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Tipo de Usuario</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Tipo de Usuario"
+            aria-label="tipo_usuario"
+            aria-describedby="basic-addon1"
+            value={tipoUsuario}
+            onChange={(e) => setTipoUsuario(e.target.value)}
           />
         </div>
         <div className="d-flex flex-column text-center">

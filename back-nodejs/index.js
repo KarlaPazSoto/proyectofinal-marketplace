@@ -15,11 +15,13 @@ app.use(express.json());
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const discountRoutes = require('./routes/discountRoutes');
 
 // Usar rutas
 app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api/productos', productRoutes);
 app.use('/api/cart', cartRoutes);
+app.use('/api/discounts', discountRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

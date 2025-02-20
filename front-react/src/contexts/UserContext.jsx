@@ -55,9 +55,9 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const handleRegister = async (email, password) => {
-    if (!email || !password) {
-      alert('Email y contraseña son requeridos.');
+  const handleRegister = async (email, password, nombre, telefono, direccion, tipo_usuario) => {
+    if (!email || !password || !nombre || !telefono || !direccion || !tipo_usuario) {
+      alert('Todos los campos son requeridos.');
       return;
     }
 
@@ -65,6 +65,10 @@ export const UserProvider = ({ children }) => {
       const response = await axios.post('http://localhost:5000/api/auth/register', {
         email,
         password,
+        nombre,
+        telefono,
+        direccion,
+        tipo_usuario
       });
 
       const token = response.data.token;

@@ -3,7 +3,6 @@ import Gallery from "../gallery/Gallery";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/usePagination";
 import axios from "axios";
-import data from "../../data/db.json";
 
 function Home() {
   const [products, setProducts] = useState([]);

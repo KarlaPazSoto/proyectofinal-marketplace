@@ -6,10 +6,11 @@ const UserInfo = () => {
 
   return (
     <div className="text-center">
-      <h3>{profile.name}</h3>
+      <h3>{profile.nombre}</h3>
       <p>{profile.email}</p>
-      <p>{profile.phone}</p>
-      <p>{profile.adress}</p>
+      <p>{profile.telefono}</p>
+      <p>{profile.direccion}</p>
+      <p>{profile.tipo_usuario}</p>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import ProfileActions from './ProfileActions';
 import UserInfo from './UserInfo';
 import ProfileImage from './ProfileImage';

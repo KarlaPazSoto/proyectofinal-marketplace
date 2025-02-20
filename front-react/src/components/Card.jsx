@@ -11,16 +11,16 @@ const Card = ({ products }) => {
     <div>
       <div className='container-fluid justify-content-evenly row lexend_font'>
         {products.map((product) => (
-          <div key={product.id} className="card col-md-3 p-0 m-3" style={{ width: "18rem" }}>
+          <div key={product.id_producto} className="card col-md-3 p-0 m-3" style={{ width: "18rem" }}>
             <div className="containerCartaImagen">
-              <img src={product.img} className="card-img-top" alt={product.name} />
+              <img src={product.imagenes} className="card-img-top" alt={product.nombre_producto} />
             </div>
             <div className="card-body">
-              <h5 className="card-title">{product.name}</h5>
-              <p className="text-center">{product.description}</p>
-              <p className="card-text text-center"><strong>Precio: ${product.price}</strong></p>
+              <h5 className="card-title">{product.nombre_producto}</h5>
+              <p className="text-center">{product.descripcion}</p>
+              <p className="card-text text-center"><strong>Precio: ${product.precio}</strong></p>
               <div className="d-flex justify-content-evenly">
-                <Link to={`/post-details/${product.id}`}><button className="btn btn-dark">
+                <Link to={`/post-details/${product.id_producto}`}><button className="btn btn-dark">
                   Ver más
                 </button></Link>
                 <button className="btn btn-dark" onClick={() => handleAddToCart(product)}>Añadir</button>

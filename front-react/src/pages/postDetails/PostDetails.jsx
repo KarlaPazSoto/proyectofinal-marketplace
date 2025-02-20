@@ -26,15 +26,15 @@ const PostDetails = () => {
       <div className="card">
         <div className="row g-0">
           <div className="col-md-4">
-            <img src={product.img} className="img-fluid rounded-start" alt={product.name} />
+            <img src={product.imagenes} className="img-fluid rounded-start" alt={product.nombre_producto} />
           </div>
           <div className="col-md-8">
             <div className="card-body">
-              <h2 className="card-title">{product.name}</h2>
-              <p className="card-text">{product.description}</p>
-              <p className="card-text"><strong>Precio: </strong>${product.price}</p>
+              <h2 className="card-title">{product.nombre_producto}</h2>
+              <p className="card-text">{product.descripcion}</p>
+              <p className="card-text"><strong>Precio: </strong>${product.precio}</p>
               <p className="card-text"><strong>Stock: </strong>{product.stock}</p>
-              <p className="card-text"><small className="text-muted">Categoría: {product.category}</small></p>
+              <p className="card-text"><small className="text-muted">Categoría: {product.categoria}</small></p>
             </div>
           </div>
         </div>

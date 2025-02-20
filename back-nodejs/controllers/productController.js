@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 const getProducts = async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM products');
+    const result = await db.query('SELECT * FROM productos');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching products' });
@@ -13,7 +13,7 @@ const getProductById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await db.query('SELECT * FROM products WHERE id = $1', [id]);
+    const result = await db.query('SELECT * FROM productos WHERE id_producto = $1', [id]);
     const product = result.rows[0];
 
     if (!product) {
