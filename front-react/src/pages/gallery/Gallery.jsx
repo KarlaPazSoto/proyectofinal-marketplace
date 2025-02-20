@@ -2,11 +2,11 @@ import React from 'react'
 
 import Card from '../../components/Card'
 
-const Gallery = () => {
+const Gallery = ({ products }) => {
   return (
     <div>
         <h1 className='ms-5 mt-5'>Todos los productos</h1>
-        <Card />
+        <Card products={products} />
     </div>
   )
 }

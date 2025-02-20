@@ -1,96 +1,96 @@
-import { createContext, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const UserContext = createContext();
 
-export const UserProvider = ({children}) => {
-    const [user, setUser] = useState({token: null, email: ''});
-    const [profile, setProfile] = useState(null);
-    const navigate = useNavigate();
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState({ token: null, email: '' });
+  const [profile, setProfile] = useState(null);
 
-    const handleLogin = async (email, password) => {
-        if (password.length < 6) {
-            setMensaje('La contraseña debe tener al menos 6 caracteres');
-            alert('La contraseña debe tener al menos 6 caracteres');
-            return;
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const email = localStorage.getItem('email');
+    if (token && email) {
+      setUser({ token, email });
+      fetchProfile(token);
+    }
+  }, []);
+
+  const fetchProfile = async (token) => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/auth/profile', {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-        try{
-            const response = await axios.post('http://localhost:5000/api/auth/login', {
-                email,
-                password,
-            });
+      });
+      setProfile(response.data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
 
-            const token = response.data.token;
+  const handleLogin = async (email, password) => {
+    if (password.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password,
+      });
 
-            setUser({token, email});
+      const token = response.data.token;
 
-            localStorage.setItem('token', token);
-            localStorage.setItem('email', email);
+      setUser({ token, email });
+      fetchProfile(token);
 
-            alert('Ingreso exitoso.');
-            navigate('/');
+      localStorage.setItem('token', token);
+      localStorage.setItem('email', email);
 
-        }catch(error) {
-            console.error('Error en el inicio de sesión.', error.response.data);
-            alert('Error en el inicio de sesión.')
-        }
+      alert('Ingreso exitoso.');
+    } catch (error) {
+      console.error('Error en el inicio de sesión.', error.response.data);
+      alert('Error en el inicio de sesión.');
+    }
+  };
 
-    };
-
-    const handleRegister = async (email, password) => {
-        if (!email || !password) {
-            alert('Email y contraseña son requeridos.');
-            return;
-          }
-
-        try{
-            const response = await axios.post('http://localhost:5000/api/auth/register', {
-                email,
-                password,
-            });
-
-            const token = response.data.token;
-
-            handleLogin(token, email);
-
-            alert('Registro exitoso.');
-            navigate('/')
-
-        }catch (error) {
-            console.error('Error en el registro.', error.response.data);
-            alert('Error en el registro.');
-        }
+  const handleRegister = async (email, password) => {
+    if (!email || !password) {
+      alert('Email y contraseña son requeridos.');
+      return;
     }
 
-    const handleLogout = () => {
-        setUser({token: null, email: ''});
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
+        email,
+        password,
+      });
 
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
+      const token = response.data.token;
 
-        alert('Sesión cerrada exitosamente.');
-        navigate('/login')
-    };
+      handleLogin(token, email);
 
-    const userProfile = async () => {
-        try{
-            const response = await axios.get('http://localhost:5000/api/auth/me', {
-                headers: {
-                    Authorization: `Bearer ${user.token}`
-                }
-            });
+      alert('Registro exitoso.');
+    } catch (error) {
+      console.error('Error en el registro.', error.response.data);
+      alert('Error en el registro.');
+    }
+  };
 
-            setProfile(response.data);
-        }catch(error) {
-            console.error('Error al obtener el perfil del usuario.', error.response.data);
-            alert('No se pudo obtener el perfil.');
-        }
-    };
+  const handleLogout = () => {
+    setUser({ token: null, email: '' });
+    setProfile(null);
 
-    return(
-        <UserContext.Provider value={{user, profile, handleLogin, handleRegister, handleLogout, userProfile}}>
-            {children}
-        </UserContext.Provider>
-    )
-}
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+
+    alert('Sesión cerrada exitosamente.');
+  };
+
+  return (
+    <UserContext.Provider value={{ user, profile, handleLogin, handleRegister, handleLogout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};

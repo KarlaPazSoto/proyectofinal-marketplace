@@ -17,6 +17,7 @@ import Carousel from '../components/Carousel';
 import Search from '../components/Search';
 import Categorys from '../components/Categorys';
 import UserInfo from '../pages/profile/UserInfo';
+import PurchaseSummary from '../components/PurchaseSummary';
 
 function AppRoutes() {
   return (
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="/search" element={<Search />} />
         <Route path="/categorys" element={<Categorys />} />
         <Route path="/user-info" element={<UserInfo />} />
+        <Route path="/purchase-summary" element={<PurchaseSummary />} />
     </Routes>
   )
 }

@@ -1,12 +1,17 @@
-import React from 'react'
-import data from '../../data/db.json'
-import { Link } from 'react-router-dom'
-import ProfileActions from './ProfileActions'
-import UserInfo from './UserInfo'
-import ProfileImage from './ProfileImage'
-import ProfileSwitch from './ProfileSwitch'
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import ProfileActions from './ProfileActions';
+import UserInfo from './UserInfo';
+import ProfileImage from './ProfileImage';
+import ProfileSwitch from './ProfileSwitch';
+import { UserContext } from '../../contexts/UserContext';
 
 const Profile = () => {
+  const { profile } = useContext(UserContext);
+
+  if (!profile) {
+    return <p>Cargando perfil...</p>;
+  }
 
   return (
     <div className='mt-4 mb-4 px-3'>
@@ -24,7 +29,7 @@ const Profile = () => {
       </div>
       <ProfileSwitch />
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

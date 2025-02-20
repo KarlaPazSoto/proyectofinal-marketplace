@@ -1,15 +1,15 @@
-import React from 'react'
-import data from '../../data/db.json'
-import '../../styles/Profile.css'
-
+import React, { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
+import '../../styles/Profile.css';
 
 const ProfileImage = () => {
-  const users = data.users[0]
+  const { profile } = useContext(UserContext);
+
   return (
     <div className="container mb-3">
-    <img src={users.img} alt={users.name} className='img-perfil' />
-</div>
-  )
-}
+      <img src={profile.img} alt={profile.name} className='img-perfil' />
+    </div>
+  );
+};
 
-export default ProfileImage
+export default ProfileImage;

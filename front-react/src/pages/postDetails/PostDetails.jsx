@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const PostDetails = () => {
-  const { id } = useParams()
-  const [product, setProduct] = useState(null)
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/products/${id}`)
-        setProduct(response.data)
+        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        setProduct(response.data);
       } catch (error) {
-        console.error('Error al obtener el producto:', error)
+        console.error('Error al obtener el producto:', error);
       }
-    }
+    };
 
-    fetchProduct()
-  }, [id])
+    fetchProduct();
+  }, [id]);
 
-  if (!product) return <div>Cargando...</div>
+  if (!product) return <div>Cargando...</div>;
 
   return (
     <div className="container mt-4">
       <div className="card">
         <div className="row g-0">
           <div className="col-md-4">
-            <img src={product.image} className="img-fluid rounded-start" alt={product.name} />
+            <img src={product.img} className="img-fluid rounded-start" alt={product.name} />
           </div>
           <div className="col-md-8">
             <div className="card-body">
@@ -40,7 +40,7 @@ const PostDetails = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PostDetails
+export default PostDetails;

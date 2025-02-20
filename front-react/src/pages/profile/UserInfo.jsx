@@ -1,14 +1,15 @@
-import React from "react";
-import data from "../../data/db.json";
+import React, { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 const UserInfo = () => {
-  const users = data.users[0];
+  const { profile } = useContext(UserContext);
+
   return (
     <div className="text-center">
-      <h3>{users.name}</h3>
-      <p>{users.email}</p>
-      <p>{users.phone}</p>
-      <p>{users.adress}</p>
+      <h3>{profile.name}</h3>
+      <p>{profile.email}</p>
+      <p>{profile.phone}</p>
+      <p>{profile.adress}</p>
     </div>
   );
 };

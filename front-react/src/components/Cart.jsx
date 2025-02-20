@@ -4,6 +4,7 @@ import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 import data from "../data/db.json";
 import "../styles/cart.css";
+import PurchaseSummary from "./PurchaseSummary";
 
 const Cart = () => {
   const {
@@ -12,13 +13,15 @@ const Cart = () => {
     handleIncrease,
     handleDecrease,
     handleRemove,
+    handleClearCart,
     handleCheckout,
   } = useContext(CartContext);
   const { user } = useContext(UserContext);
 
   return (
-    <div className="container">
+    <div className="container d-flex">
       <h2 className="text-center">Tu Carrito</h2>
+      <div>
       <div className="container-fluid">
         {cart.length > 0 ? (
           cart.map((product) => (
@@ -84,7 +87,19 @@ const Cart = () => {
         >
           Pagar
         </button>
+        <button
+            className="btn btn-dark m-3"
+            onClick={handleClearCart}
+            disabled={cart.length === 0}
+          >
+            Vaciar Carrito
+          </button>
       </div>
+      </div>
+      <div>
+      <PurchaseSummary/>
+      </div>
+
     </div>
   );
 };
