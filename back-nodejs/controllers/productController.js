@@ -20,13 +20,12 @@ const productController = {
         success: false, //Indica que la solicitud no fue exitosa.
         message: 'Error al conseguir los productos.', 
         error: error.message //Enseña el error que hubo.
-      });
-      
+      });      
     }
   },
 
   //Obtenemos un producto por su ID.
-  getProductById: async (res, res) => {
+  getProductById: async (req, res) => {
     const {id} = req.params;
 
     try{

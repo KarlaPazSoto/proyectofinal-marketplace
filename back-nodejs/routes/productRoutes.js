@@ -16,7 +16,7 @@ router.route('/')
   .post(createProduct); //Crear un producto.
 
 router.route('/:id')
-  .get(getProductoById)  //Obtener un producto por ID.
+  .get(getProductById)  //Obtener un producto por ID.
   .put(updateProduct)  //Actualizar un producto existente.
   .delete(deleteProduct); //Eliminar un producto.
 
