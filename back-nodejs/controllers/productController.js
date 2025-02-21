@@ -20,8 +20,7 @@ const productController = {
         success: false, //Indica que la solicitud no fue exitosa.
         message: 'Error al conseguir los productos.', 
         error: error.message //Enseña el error que hubo.
-      });
-      
+      });      
     }
   },
 
