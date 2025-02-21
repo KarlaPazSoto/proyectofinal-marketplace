@@ -1,8 +1,15 @@
 import React from "react";
-import data from '../data/db.json'
+import useProducts from "../hooks/useProducts";
 import "../styles/Carousel.css";
 
 const Carousel = () => {
+  const { products, loading, error } = useProducts();
+
+  if (loading) return <div>Cargando productos...</div>;
+  if (error) return <div>Error al cargar productos: {error.message}</div>;
+
+  console.log("Productos:", products);
+
   return (
     <div>
       <div
@@ -12,21 +19,23 @@ const Carousel = () => {
         data-bs-interval="2000"
       >
         <div className="carousel-inner carousel-image">
-          {data.products.map((product, index) => (
-            <div key={product.id_producto} className={`carousel-item ${index === 0 ? "active" : ""}`}>
-              <img
-                src={product.imagenes}
-                className="img-fluid"
-                alt={product.nombre_producto}
-              />
-            </div>
+          {products.map((product, index) => (
+            product.imagenes.map((imagen, imgIndex) => (
+              <div key={`${product.id_producto}-${imgIndex}`} className={`carousel-item ${index === 0 && imgIndex === 0 ? "active" : ""}`}>
+                <img
+                  src={imagen}
+                  className="img-fluid"
+                  alt={product.nombre_producto}
+                />
+              </div>
+            ))
           ))}
         </div>
         <button
           className="carousel-control-prev"
           type="button"
           data-bs-slide="prev"
-          data-bs-target="#carouselExampleInterval"
+          data-bs-target="#carouselExampleAutoplaying"
         >
           <span
             className="carousel-control-prev-icon"
@@ -38,7 +47,7 @@ const Carousel = () => {
           className="carousel-control-next"
           type="button"
           data-bs-slide="next"
-          data-bs-target="#carouselExampleInterval"
+          data-bs-target="#carouselExampleAutoplaying"
         >
           <span
             className="carousel-control-next-icon"

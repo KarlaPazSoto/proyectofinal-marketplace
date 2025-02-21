@@ -9,7 +9,7 @@ const PostDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const response = await axios.get(`http://localhost:5001/api/productos/${id}`);
         setProduct(response.data);
       } catch (error) {
         console.error('Error al obtener el producto:', error);

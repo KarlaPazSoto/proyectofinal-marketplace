@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchProfile = async (token) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/auth/profile', {
+      const response = await axios.get('http://localhost:5001/api/auth/profile', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post('http://localhost:5001/api/auth/login', {
         email,
         password,
       });
@@ -62,7 +62,7 @@ export const UserProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post('http://localhost:5001/api/auth/register', {
         email,
         password,
         nombre,

@@ -22,5 +22,4 @@ const usePagination = (items, itemsPerPage) => {
   };
 };
 
-
 export default usePagination;

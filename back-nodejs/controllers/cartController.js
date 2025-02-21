@@ -6,7 +6,7 @@ const addToCart = async (req, res) => {
 
   try {
     const result = await db.query(
-      'INSERT INTO cart (user_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *',
+      'INSERT INTO carrito_productos (id_usuario, id_producto, cantidad) VALUES ($1, $2, $3) RETURNING *',
       [userId, productId, quantity]
     );
     res.status(201).json(result.rows[0]);
@@ -19,7 +19,7 @@ const getCart = async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    const result = await db.query('SELECT * FROM cart WHERE user_id = $1', [userId]);
+    const result = await db.query('SELECT * FROM carrito_productos WHERE id_usuario = $1', [userId]);
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching cart' });
@@ -31,7 +31,7 @@ const removeFromCart = async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    await db.query('DELETE FROM cart WHERE user_id = $1 AND product_id = $2', [userId, id]);
+    await db.query('DELETE FROM carrito_productos WHERE id_usuario = $1 AND id_producto = $2', [userId, id]);
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: 'Error removing from cart' });
@@ -42,7 +42,7 @@ const clearCart = async (req, res) => {
   const userId = req.user.userId;
 
   try {
-    await db.query('DELETE FROM cart WHERE user_id = $1', [userId]);
+    await db.query('DELETE FROM carrito_productos WHERE id_usuario = $1', [userId]);
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: 'Error clearing cart' });

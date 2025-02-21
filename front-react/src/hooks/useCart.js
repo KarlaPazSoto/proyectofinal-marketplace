@@ -10,7 +10,7 @@ const useCart = () => {
   const fetchCart = async () => {
     if (!user.token) return;
     try {
-      const response = await axios.get('http://localhost:5000/api/cart', {
+      const response = await axios.get('http://localhost:5001/api/cart', {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
@@ -27,7 +27,7 @@ const useCart = () => {
 
   const handleAddToCart = async (product) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/cart', {
+      const response = await axios.post('http://localhost:5001/api/cart', {
         productId: product.id,
         quantity: 1
       }, {
@@ -45,7 +45,7 @@ const useCart = () => {
     const product = cart.find(item => item.product_id === id);
     if (product) {
       try {
-        const response = await axios.post('http://localhost:5000/api/cart', {
+        const response = await axios.post('http://localhost:5001/api/cart', {
           productId: id,
           quantity: product.quantity + 1
         }, {
@@ -64,7 +64,7 @@ const useCart = () => {
     const product = cart.find(item => item.product_id === id);
     if (product && product.quantity > 1) {
       try {
-        const response = await axios.post('http://localhost:5000/api/cart', {
+        const response = await axios.post('http://localhost:5001/api/cart', {
           productId: id,
           quantity: product.quantity - 1
         }, {
@@ -83,7 +83,7 @@ const useCart = () => {
 
   const handleRemove = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cart/${id}`, {
+      await axios.delete(`http://localhost:5001/api/cart/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
@@ -96,7 +96,7 @@ const useCart = () => {
 
   const handleClearCart = async () => {
     try {
-      await axios.delete('http://localhost:5000/api/cart', {
+      await axios.delete('http://localhost:5001/api/cart', {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
@@ -114,7 +114,7 @@ const useCart = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/checkouts',
+      const response = await axios.post('http://localhost:5001/api/checkouts',
         { cart }, {
           headers: {
             Authorization: `Bearer ${user.token}`

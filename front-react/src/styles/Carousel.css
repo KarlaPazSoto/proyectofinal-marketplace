@@ -1,12 +1,9 @@
 .carousel-image {
-  margin: 3rem 0;
-  height: 25rem;
+  max-height: 500px;
+  overflow: hidden;
 }
 
-/*Imagen del carousel*/
-.carousel-image img {
+.carousel-item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /*Ajusta la imagen al tamaño del contenedor*/
-  object-position: center; /*Centra la imagen*/
+  height: auto;
 }

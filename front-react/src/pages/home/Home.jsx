@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Gallery from "../gallery/Gallery";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/usePagination";
-import axios from "axios";
+import useProducts from "../../hooks/useProducts";
 
 function Home() {
-  const [products, setProducts] = useState([]);
+  const { products, loading, error } = useProducts();
   const { currentItems, paginate, currentPage, totalPages } = usePagination(products, 4);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/productos');
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  if (loading) return <div>Cargando productos...</div>;
+  if (error) return <div>Error al cargar productos: {error.message}</div>;
 
   return (
     <div>

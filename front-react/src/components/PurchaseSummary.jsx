@@ -17,7 +17,7 @@ const PurchaseSummary = () => {
   useEffect(() => {
     const fetchPurchaseSummary = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/purchase/summary', {
+        const response = await axios.get('http://localhost:5001/api/purchase/summary', {
           headers: {
             Authorization: `Bearer ${user.token}`
           }
@@ -35,7 +35,7 @@ const PurchaseSummary = () => {
 
   const applyDiscountCode = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/discounts', {
+      const response = await axios.get('http://localhost:5001/api/discounts', {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
