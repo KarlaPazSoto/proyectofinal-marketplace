@@ -26,7 +26,7 @@ const productController = {
   },
 
   //Obtenemos un producto por su ID.
-  getProductById: async (res, res) => {
+  getProductById: async (req, res) => {
     const {id} = req.params;
 
     try{
