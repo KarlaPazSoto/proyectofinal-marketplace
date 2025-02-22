@@ -5,7 +5,7 @@ import About from '../pages/about/About';
 import Register from '../pages/register/Register';
 import Login from '../pages/login/Login';
 import Profile from '../pages/profile/Profile';
-import Feed from '../pages/feed/Feed';
+import Feed from '../pages/feed/xd';
 import CreatePost from '../pages/createPost/CreatePost';
 import Gallery from '../pages/gallery/Gallery';
 import Card from '../components/Card';

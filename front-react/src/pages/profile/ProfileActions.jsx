@@ -12,6 +12,10 @@ const ProfileActions = () => {
           <button className='btn-actions'>Mis publicaiones</button>
           </Link>
 
+          <Link to='/purchases'>
+          <button className='btn-actions'>Mis compras</button>
+          </Link>
+
           <Link to='/principal'>
           <button className='btn-actions'>Cerrar sesión</button>
           </Link>

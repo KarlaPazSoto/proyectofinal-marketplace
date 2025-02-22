@@ -57,10 +57,23 @@ const login = async (req, res) => {
 
 const getProfile = async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM usuarios WHERE id = $1', [req.user.userId]);
+    console.log('Token decodificado:', req.user);  // Ver qué contiene el token
+    
+    const result = await db.query(
+      'SELECT * FROM usuarios WHERE id = $1',
+      [req.user.userId]
+    );
+    
+    console.log('Resultado de la consulta:', result.rows);  // Ver qué devuelve la consulta
+    
     const user = result.rows[0];
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
     res.json(user);
   } catch (error) {
+    console.error('Error completo:', error);
     res.status(500).json({ error: 'Error fetching profile' });
   }
 };

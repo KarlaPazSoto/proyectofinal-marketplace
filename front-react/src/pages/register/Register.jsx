@@ -24,15 +24,15 @@ const Register = () => {
   };
 
   return (
-    <div className="container col-4">
-      <h2>Registrarse</h2>
+    <div className="container col-4 mt-5 mb-5">
+      <h2 className='mb-5'>Registrarse</h2>
       <form onSubmit={onSubmit}>
         <div className="mb-3">
           <label className="form-label">Nombre</label>
           <input
             type="text"
             className="form-control"
-            placeholder="Nombre"
+            placeholder="Ej: Juan Perez"
             aria-label="nombre"
             aria-describedby="basic-addon1"
             value={nombre}
@@ -44,7 +44,7 @@ const Register = () => {
           <input
             type="email"
             className="form-control"
-            placeholder="Email"
+            placeholder="Ej: juanperez@gmail.com"
             aria-label="email"
             aria-describedby="basic-addon1"
             value={email}
@@ -56,7 +56,7 @@ const Register = () => {
           <input
             type="password"
             className="form-control"
-            placeholder="Contraseña"
+            placeholder="**********"
             aria-label="contraseña"
             aria-describedby="basic-addon1"
             value={password}
@@ -68,7 +68,7 @@ const Register = () => {
           <input
             type="password"
             className="form-control"
-            placeholder="Confirmar contraseña"
+            placeholder="**********"
             aria-label="confirmar contraseña"
             aria-describedby="basic-addon1"
             value={confirmPassword}
@@ -80,7 +80,7 @@ const Register = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Teléfono"
+            placeholder="Ej: 1234567890"
             aria-label="telefono"
             aria-describedby="basic-addon1"
             value={telefono}
@@ -92,25 +92,25 @@ const Register = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Dirección"
+            placeholder="Ej: Calle Falsa 123"
             aria-label="direccion"
             aria-describedby="basic-addon1"
             value={direccion}
             onChange={(e) => setDireccion(e.target.value)}
           />
         </div>
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <label className="form-label">Tipo de Usuario</label>
           <input
             type="text"
             className="form-control"
-            placeholder="Tipo de Usuario"
+            placeholder="Ej: Cliente"
             aria-label="tipo_usuario"
             aria-describedby="basic-addon1"
             value={tipoUsuario}
             onChange={(e) => setTipoUsuario(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="d-flex flex-column text-center">
           <button type="submit" className="btn btn-primary">Registrarme</button>
           <p>¿Ya tienes cuenta? <Link to='/login'>Inicia sesión</Link></p>

@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { authService } from '../../services/api';
 import ProfileActions from './ProfileActions';
 import UserInfo from './UserInfo';
 import ProfileImage from './ProfileImage';
@@ -6,7 +7,20 @@ import ProfileSwitch from './ProfileSwitch';
 import { UserContext } from '../../contexts/UserContext';
 
 const Profile = () => {
-  const { profile } = useContext(UserContext);
+  const { profile, setProfile } = useContext(UserContext);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await authService.getProfile();
+        setProfile(data);
+      } catch (error) {
+        console.error('Error al cargar el perfil:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   if (!profile) {
     return <p>Cargando perfil...</p>;

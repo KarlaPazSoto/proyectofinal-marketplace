@@ -14,7 +14,7 @@ function App() {
   const location = useLocation();
   
  // Definir rutas donde NO se debe mostrar el Header
- const hiddenHeaderRoutes = ["/principal", "/profile", "/cart"];
+ const hiddenHeaderRoutes = ["/principal", "/profile", "/cart", "/register", "/login"];
 
   return (
     <>

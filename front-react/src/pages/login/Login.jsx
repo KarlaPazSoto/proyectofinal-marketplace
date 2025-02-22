@@ -15,8 +15,8 @@ const Login = () => {
   };
 
   return (
-    <div className='container col-4'>
-      <h2>Iniciar sesión</h2>
+    <div className='container col-4 mt-5 mb-5'>
+      <h2 className='mb-5'>Iniciar sesión</h2>
       <form onSubmit={onSubmit}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">Correo electrónico</label>
