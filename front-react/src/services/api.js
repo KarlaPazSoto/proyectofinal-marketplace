@@ -9,11 +9,17 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true
 });
 
-// Interceptor para agregar el token a todas las peticiones
+// Añadir interceptor para debugging
 api.interceptors.request.use(
   (config) => {
+    console.log('Realizando petición:', {
+      url: config.url,
+      method: config.method,
+      headers: config.headers
+    });
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -21,23 +27,51 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error('Error en la petición:', error);
     return Promise.reject(error);
   }
 );
 
 // Servicios de autenticación
 export const authService = {
-  login: async (credentials) => {
-    const response = await api.post('/auth/login', credentials);
-    return response.data;
-  },
   register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
-    return response.data;
+    try {
+      const response = await api.post('/auth/register', userData);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      return response.data;
+    } catch (error) {
+      console.error('Error en registro:', error.response?.data);
+      throw error;
+    }
   },
+
+  login: async (credentials) => {
+    try {
+      const response = await api.post('/auth/login', credentials);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+      }
+      return response.data;
+    } catch (error) {
+      console.error('Error en login:', error.response?.data);
+      throw error;
+    }
+  },
+
   getProfile: async () => {
-    const response = await api.get('/auth/profile');
-    return response.data;
+    try {
+      const response = await api.get('/auth/profile');
+      return response.data;
+    } catch (error) {
+      console.error('Error obteniendo perfil:', error.response?.data);
+      throw error;
+    }
+  },
+
+  logout: () => {
+    localStorage.removeItem('token');
   },
 };
 

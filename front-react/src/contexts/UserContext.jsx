@@ -1,99 +1,41 @@
-import { createContext, useState, useEffect } from "react";
-import axios from "axios";
+import React, { createContext, useState } from 'react';
+import { authService } from '../services/api';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({ token: null, email: '' });
   const [profile, setProfile] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const email = localStorage.getItem('email');
-    if (token && email) {
-      setUser({ token, email });
-      fetchProfile(token);
-    }
-  }, []);
-
-  const fetchProfile = async (token) => {
-    try {
-      const response = await axios.get('http://localhost:5001/api/auth/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setProfile(response.data);
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    }
-  };
-
   const handleLogin = async (email, password) => {
-    if (password.length < 6) {
-      alert('La contraseña debe tener al menos 6 caracteres');
-      return;
-    }
     try {
-      const response = await axios.post('http://localhost:5001/api/auth/login', {
-        email,
-        password,
-      });
-
-      const token = response.data.token;
-
-      setUser({ token, email });
-      fetchProfile(token);
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('email', email);
-
-      alert('Ingreso exitoso.');
+      // Usar el servicio de autenticación para login
+      const response = await authService.login({ email, password });
+      
+      // Si el login es exitoso, obtener el perfil
+      if (response.token) {
+        const userProfile = await authService.getProfile();
+        setProfile(userProfile);
+      }
+      
+      return response;
     } catch (error) {
-      console.error('Error en el inicio de sesión.', error.response.data);
-      alert('Error en el inicio de sesión.');
-    }
-  };
-
-  const handleRegister = async (email, password, nombre, telefono, direccion, tipo_usuario) => {
-    if (!email || !password || !nombre || !telefono || !direccion || !tipo_usuario) {
-      alert('Todos los campos son requeridos.');
-      return;
-    }
-
-    try {
-      const response = await axios.post('http://localhost:5001/api/auth/register', {
-        email,
-        password,
-        nombre,
-        telefono,
-        direccion,
-        tipo_usuario
+      console.error('Error en login:', error);
+      console.error('Detalles:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        estado: error.response?.status
       });
-
-      const token = response.data.token;
-
-      handleLogin(token, email);
-
-      alert('Registro exitoso.');
-    } catch (error) {
-      console.error('Error en el registro.', error.response.data);
-      alert('Error en el registro.');
+      throw error;
     }
   };
 
   const handleLogout = () => {
-    setUser({ token: null, email: '' });
+    authService.logout();
     setProfile(null);
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-
-    alert('Sesión cerrada exitosamente.');
   };
 
   return (
-    <UserContext.Provider value={{ user, profile, handleLogin, handleRegister, handleLogout }}>
+    <UserContext.Provider value={{ profile, setProfile, handleLogin, handleLogout }}>
       {children}
     </UserContext.Provider>
   );

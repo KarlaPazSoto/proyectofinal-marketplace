@@ -12,18 +12,30 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        console.log('Iniciando fetch del perfil');
         const data = await authService.getProfile();
+        console.log('Datos recibidos:', data);
         setProfile(data);
       } catch (error) {
         console.error('Error al cargar el perfil:', error);
+        console.error('Detalles del error:', {
+          mensaje: error.message,
+          respuesta: error.response?.data,
+          estado: error.response?.status
+        });
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [setProfile]);
 
   if (!profile) {
-    return <p>Cargando perfil...</p>;
+    return <div>
+      <p>Cargando perfil...</p>
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>;
   }
 
   return (

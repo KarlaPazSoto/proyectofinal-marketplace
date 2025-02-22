@@ -7,16 +7,28 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await handleLogin(email, password);
-    navigate('/');
+    setError('');
+    setIsLoading(true);
+    
+    try {
+      await handleLogin(email, password);
+      navigate('/');
+    } catch (error) {
+      setError(error.response?.data?.error || 'Error al iniciar sesión');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className='container col-4 mt-5 mb-5'>
       <h2 className='mb-5'>Iniciar sesión</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={onSubmit}>
         <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">Correo electrónico</label>
@@ -40,8 +52,14 @@ const Login = () => {
           />
         </div>
         <div className='d-flex flex-column text-center'>
-          <button className="btn btn-primary" type="submit">
-            Iniciar sesión
+          <button 
+            className="btn btn-primary" 
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : 'Iniciar sesión'}
           </button>
           <p>¿No tienes cuenta? <Link to='/register'>Regístrate</Link></p>
         </div>
