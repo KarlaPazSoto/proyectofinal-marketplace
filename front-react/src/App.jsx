@@ -1,6 +1,6 @@
 import AppRoutes from "./routes/Routes";
 import { useContext } from "react";
-import { UserContext } from "./contexts/UserContext";
+import { UserContext, UserProvider } from "./contexts/UserContext";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -14,10 +14,10 @@ function App() {
   const location = useLocation();
   
  // Definir rutas donde NO se debe mostrar el Header
- const hiddenHeaderRoutes = ["/principal", "/profile", "/cart"];
+ const hiddenHeaderRoutes = ["/principal", "/profile", "/cart", "/register", "/login"];
 
   return (
-    <>
+    <UserProvider>
       <div className="d-flex flex-column min-vh-100 all-body">
         <Navbar />
         <main className="flex-grow-1">
@@ -27,7 +27,7 @@ function App() {
         </main>
         <Footer />
       </div>
-    </>
+    </UserProvider>
   );
 }
 

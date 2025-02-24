@@ -1,120 +1,130 @@
 import React, { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/api';
 import { UserContext } from '../../contexts/UserContext';
 
 const Register = () => {
-  const { handleRegister } = useContext(UserContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [direccion, setDireccion] = useState('');
-  const [tipoUsuario, setTipoUsuario] = useState('');
   const navigate = useNavigate();
+  const { setProfile } = useContext(UserContext);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    nombre: '',
+    telefono: '',
+    direccion: '',
+    tipo_usuario: 'comprador' // o vendedor
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Las contraseñas no coinciden');
-      return;
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await authService.register(formData);
+      if (response.token) {
+        const profile = await authService.getProfile();
+        setProfile(profile);
+        navigate('/');
+      }
+    } catch (error) {
+      setError(error.response?.data?.error || 'Error en el registro');
+    } finally {
+      setIsLoading(false);
     }
-    await handleRegister(email, password, nombre, telefono, direccion, tipoUsuario);
-    navigate('/login');
   };
 
   return (
-    <div className="container col-4">
-      <h2>Registrarse</h2>
-      <form onSubmit={onSubmit}>
+    <div className="container col-4 mt-5">
+      <h2>Registro</h2>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Nombre</label>
           <input
             type="text"
+            name="nombre"
             className="form-control"
-            placeholder="Nombre"
-            aria-label="nombre"
-            aria-describedby="basic-addon1"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            value={formData.nombre}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Email</label>
           <input
             type="email"
+            name="email"
             className="form-control"
-            placeholder="Email"
-            aria-label="email"
-            aria-describedby="basic-addon1"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Contraseña</label>
           <input
             type="password"
+            name="password"
             className="form-control"
-            placeholder="Contraseña"
-            aria-label="contraseña"
-            aria-describedby="basic-addon1"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Confirmar contraseña</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Confirmar contraseña"
-            aria-label="confirmar contraseña"
-            aria-describedby="basic-addon1"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Teléfono</label>
           <input
-            type="text"
+            type="tel"
+            name="telefono"
             className="form-control"
-            placeholder="Teléfono"
-            aria-label="telefono"
-            aria-describedby="basic-addon1"
-            value={telefono}
-            onChange={(e) => setTelefono(e.target.value)}
+            value={formData.telefono}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Dirección</label>
           <input
             type="text"
+            name="direccion"
             className="form-control"
-            placeholder="Dirección"
-            aria-label="direccion"
-            aria-describedby="basic-addon1"
-            value={direccion}
-            onChange={(e) => setDireccion(e.target.value)}
+            value={formData.direccion}
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="mb-3">
           <label className="form-label">Tipo de Usuario</label>
-          <input
-            type="text"
+          <select
+            name="tipo_usuario"
             className="form-control"
-            placeholder="Tipo de Usuario"
-            aria-label="tipo_usuario"
-            aria-describedby="basic-addon1"
-            value={tipoUsuario}
-            onChange={(e) => setTipoUsuario(e.target.value)}
-          />
+            value={formData.tipo_usuario}
+            onChange={handleChange}
+            required
+          >
+            <option value="comprador">Comprador</option>
+            <option value="vendedor">Vendedor</option>
+          </select>
         </div>
-        <div className="d-flex flex-column text-center">
-          <button type="submit" className="btn btn-primary">Registrarme</button>
-          <p>¿Ya tienes cuenta? <Link to='/login'>Inicia sesión</Link></p>
-        </div>
+        <button 
+          type="submit" 
+          className="btn btn-primary"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          ) : 'Registrarse'}
+        </button>
       </form>
     </div>
   );

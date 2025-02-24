@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { UserContext } from "../contexts/UserContext";
 import data from "../data/db.json";
 import "../styles/cart.css";
 import PurchaseSummary from "./PurchaseSummary";
+import { cartService } from '../services/api';
 
 const Cart = () => {
   const {
@@ -17,6 +18,29 @@ const Cart = () => {
     handleCheckout,
   } = useContext(CartContext);
   const { user } = useContext(UserContext);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const loadCart = async () => {
+      try {
+        const data = await cartService.getCart();
+        setCartItems(data);
+      } catch (error) {
+        console.error('Error al cargar el carrito:', error);
+      }
+    };
+
+    loadCart();
+  }, []);
+
+  const handleRemoveFromCart = async (productId) => {
+    try {
+      await cartService.removeFromCart(productId);
+      setCartItems(cartItems.filter(item => item._id !== productId));
+    } catch (error) {
+      console.error('Error al eliminar del carrito:', error);
+    }
+  };
 
   return (
     <div className="container d-flex">
@@ -64,7 +88,7 @@ const Cart = () => {
                     <button
                       type="button"
                       className="btn btn-dark"
-                      onClick={() => handleRemove(product.id)}
+                      onClick={() => handleRemoveFromCart(product.id)}
                     >
                       🗑️
                     </button>

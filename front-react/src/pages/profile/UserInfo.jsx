@@ -5,12 +5,12 @@ const UserInfo = () => {
   const { profile } = useContext(UserContext);
 
   return (
-    <div className="text-center">
-      <h3>{profile.nombre}</h3>
-      <p>{profile.email}</p>
-      <p>{profile.telefono}</p>
-      <p>{profile.direccion}</p>
-      <p>{profile.tipo_usuario}</p>
+    <div className="text-start">
+      <h4>{profile.nombre}</h4>
+      <p><b>E-mail:</b> {profile.email}</p>
+      <p><b>Número de teléfono:</b> {profile.telefono}</p>
+      <p><b>Dirección:</b> {profile.direccion}</p>
+      <p><b>Fecha de registro:</b> {profile.fecha_registro}</p>
     </div>
   );
 };
