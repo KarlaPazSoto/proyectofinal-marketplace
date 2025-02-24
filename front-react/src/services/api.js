@@ -78,24 +78,43 @@ export const authService = {
 // Servicios de productos
 export const productService = {
   getAllProducts: async () => {
-    const response = await api.get('/productos');
-    return response.data;
+    try {
+      const response = await api.get('/productos/user/products');
+      return response.data.data;
+    } catch (error) {
+      console.error('Error obteniendo productos:', error);
+      throw error;
+    }
   },
   getProductById: async (id) => {
     const response = await api.get(`/productos/${id}`);
     return response.data;
   },
   createProduct: async (productData) => {
-    const response = await api.post('/productos', productData);
-    return response.data;
+    try {
+      const response = await api.post('/productos', productData);
+      return response.data.data;
+    } catch (error) {
+      console.error('Error creando producto:', error);
+      throw error;
+    }
   },
-  updateProduct: async (id, productData) => {
-    const response = await api.put(`/productos/${id}`, productData);
-    return response.data;
+  updateProduct: async (productId, productData) => {
+    try {
+      const response = await api.put(`/productos/${productId}`, productData);
+      return response.data.data;
+    } catch (error) {
+      console.error('Error actualizando producto:', error);
+      throw error;
+    }
   },
-  deleteProduct: async (id) => {
-    const response = await api.delete(`/productos/${id}`);
-    return response.data;
+  deleteProduct: async (productId) => {
+    try {
+      await api.delete(`/productos/${productId}`);
+    } catch (error) {
+      console.error('Error eliminando producto:', error);
+      throw error;
+    }
   },
   getProductsByCategory: async (category) => {
     const response = await api.get(`/productos/categoria/${category}`);

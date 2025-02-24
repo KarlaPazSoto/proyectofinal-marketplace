@@ -57,25 +57,60 @@ const productController = {
 
   //Creamos un nuevo producto.
   createProduct: async (req, res) => {
-    const {nombre, descripcion, precio, stock, categoria, imagenes, estado} = req.body;
-
     try {
+      // Obtener datos del body y el ID del usuario del token
+      const { nombre, descripcion, precio, stock, categoria, imagenes } = req.body;
+      const userId = req.user.userId;
+
+      console.log('Datos recibidos:', {
+        nombre,
+        descripcion,
+        precio,
+        stock,
+        categoria,
+        imagenes,
+        userId
+      });
+
+      // Validar datos requeridos
+      if (!nombre || !precio || !stock || !categoria) {
+        return res.status(400).json({
+          success: false,
+          message: 'Faltan campos requeridos'
+        });
+      }
+
       const result = await db.query(
-        'INSERT INTO productos (nombre, descripcion, precio, stock, categoria, imagenes, estado) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-        [nombre, descripcion, precio, stock, categoria, imagenes, estado]
+        `INSERT INTO productos 
+         (id_usuario, nombre_producto, descripcion, precio, stock, categoria, imagenes, estado) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+         RETURNING *`,
+        [
+          userId,
+          nombre,
+          descripcion || '',
+          precio,
+          stock,
+          categoria,
+          imagenes ? [imagenes] : [], // Convertir a array ya que imagenes es TEXT[]
+          'disponible'
+        ]
       );
 
+      console.log('Producto creado:', result.rows[0]);
+
       res.status(201).json({
-        sucess: true,
-        message: 'Producto creado correctamente.',
+        success: true,
+        message: 'Producto creado correctamente',
         data: result.rows[0]
       });
-    }catch (error) {
-      console.error('Error en createProduct:', error);
+    } catch (error) {
+      console.error('Error detallado en createProduct:', error);
       res.status(500).json({
-        sucess: false,
-        message: 'Error al crear el producto.',
-        error: error.message
+        success: false,
+        message: 'Error al crear el producto',
+        error: error.message,
+        details: error.stack
       });
     }
   },
@@ -184,6 +219,31 @@ const productController = {
       res.status(500).json({
         sucess: false,
         message: 'Error al buscar los productos.',
+        error: error.message
+      });
+    }
+  },
+
+  //Obtenemos los productos del usuario autenticado.
+  getUserProducts: async (req, res) => {
+    try {
+      const userId = req.user.userId; // Obtenemos el ID del usuario del token.
+      
+      const result = await db.query(
+        'SELECT * FROM productos WHERE id_usuario = $1 ORDER BY id_producto',
+        [userId]
+      );
+
+      res.status(200).json({
+        success: true,
+        data: result.rows,
+        count: result.rowCount
+      });
+    } catch (error) {
+      console.error('Error en getUserProducts:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Error al obtener los productos del usuario.',
         error: error.message
       });
     }

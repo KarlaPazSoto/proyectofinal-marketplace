@@ -3,7 +3,7 @@ import { authService } from '../../services/api';
 import ProfileActions from './ProfileActions';
 import UserInfo from './UserInfo';
 import ProfileImage from './ProfileImage';
-import ProfileSwitch from './ProfileSwitch';
+/* import ProfileSwitch from './ProfileSwitch'; */
 import { UserContext } from '../../contexts/UserContext';
 
 const Profile = () => {
@@ -39,8 +39,8 @@ const Profile = () => {
   }
 
   return (
-    <div className='mt-4 mb-4 px-3'>
-      <h1 className='text-center'>Mi perfil</h1>
+    <div className='mt-5 mb-5 px-3'>
+      <h1 className='text-center mb-5'>Mi perfil</h1>
       <div className="profile-container d-flex justify-content-evenly align-items-center">
         <div className='mt-3'>
           <ProfileImage />
@@ -52,7 +52,7 @@ const Profile = () => {
           <ProfileActions />
         </div>
       </div>
-      <ProfileSwitch />
+      {/* <ProfileSwitch /> */}
     </div>
   );
 };

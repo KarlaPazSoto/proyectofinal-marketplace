@@ -8,7 +8,7 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
     precio: '',
     stock: '',
     categoria: '',
-    imagen: ''
+    imagenes: ''
   });
 
   const categorias = [
@@ -28,9 +28,35 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleAddProduct(formData);
+    setError('');
+    setIsLoading(true);
+
+    try {
+      // Validar campos requeridos
+      if (!formData.nombre || !formData.precio || !formData.stock || !formData.categoria) {
+        throw new Error('Por favor complete todos los campos requeridos');
+      }
+
+      // Convertir precio y stock a números
+      const productoData = {
+        nombre: formData.nombre,
+        descripcion: formData.descripcion,
+        precio: parseFloat(formData.precio),
+        stock: parseInt(formData.stock),
+        categoria: formData.categoria,
+        imagenes: formData.imagenes ? formData.imagenes : null
+      };
+
+      await handleAddProduct(productoData);
+      onCancel();
+    } catch (error) {
+      setError(error.message || 'Error al crear el producto');
+      console.error('Error al crear producto:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,8 +147,8 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
             <Form.Label>URL de la Imagen</Form.Label>
             <Form.Control
               type="url"
-              name="imagen"
-              value={formData.imagen}
+              name="imagenes"
+              value={formData.imagenes}
               onChange={handleChange}
               placeholder="https://ejemplo.com/imagen.jpg"
             />
