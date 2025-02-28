@@ -2,10 +2,19 @@ import React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
+import { UserContext } from "../contexts/UserContext";
 import "../styles/card.css";
 
 const Card = ({ products }) => {
   const { handleAddToCart } = useContext(CartContext);
+  const { profile, token } = useContext(UserContext);
+
+  const handleAdd = (product) => {
+    console.log("Token actual:", token);
+    console.log("Perfil actual:", profile);
+    console.log("Producto a agregar:", product);
+    handleAddToCart(product);
+  };
 
   return (
     <div>
@@ -23,7 +32,7 @@ const Card = ({ products }) => {
                 <Link to={`/post-details/${product.id_producto}`}><button className="btn btn-dark">
                   Ver más
                 </button></Link>
-                <button className="btn btn-dark" onClick={() => handleAddToCart(product)}>Añadir</button>
+                <button className="btn btn-dark" onClick={() => handleAdd(product)}>Añadir</button>
               </div>
             </div>
           </div>

@@ -15,12 +15,15 @@ const api = axios.create({
 // Añadir interceptor para debugging
 api.interceptors.request.use(
   (config) => {
-    console.log('Realizando petición:', {
+    const token = localStorage.getItem('token');
+    console.log('Interceptor de petición:', {
       url: config.url,
       method: config.method,
+      tieneToken: !!token,
+      tokenValue: token,
       headers: config.headers
     });
-    const token = localStorage.getItem('token');
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -50,6 +53,8 @@ export const authService = {
   login: async (credentials) => {
     try {
       const response = await api.post('/auth/login', credentials);
+      console.log('Respuesta del servidor login:', response.data);
+      
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
       }
@@ -129,21 +134,100 @@ export const productService = {
 // Servicios del carrito
 export const cartService = {
   getCart: async () => {
-    const response = await api.get('/cart');
-    return response.data;
+    try {
+      console.log('Intentando obtener el carrito...');
+      const response = await api.get('/cart');
+      console.log('Respuesta del carrito:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error detallado al obtener el carrito:', {
+        error: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.config?.headers
+      });
+      throw error;
+    }
   },
-  addToCart: async (productData) => {
-    const response = await api.post('/cart', productData);
-    return response.data;
+
+  addToCart: async (productId, quantity = 1) => {
+    try {
+      console.log('Intentando agregar al carrito:', {
+        productId,
+        quantity,
+        token: localStorage.getItem('token'),
+        headers: api.defaults.headers
+      });
+
+      const response = await api.post('/cart', { productId, quantity });
+      return response.data;
+    } catch (error) {
+      console.error('Error detallado al agregar al carrito:', {
+        error: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.config?.headers
+      });
+      throw error;
+    }
   },
+
+  updateQuantity: async (productId, quantity) => {
+    try {
+      console.log('Enviando actualización de cantidad:', { 
+        productId, 
+        quantity,
+        url: `/cart/${productId}`,
+        token: localStorage.getItem('token')
+      });
+
+      const response = await api.put(`/cart/${productId}`, { 
+        quantity  // Usar 'quantity' en lugar de 'cantidad'
+      });
+      
+      console.log('Respuesta de actualización:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error detallado al actualizar cantidad:', {
+        error: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.config?.headers,
+        requestData: { productId, quantity }
+      });
+      throw error;
+    }
+  },
+
   removeFromCart: async (productId) => {
-    const response = await api.delete(`/cart/${productId}`);
-    return response.data;
+    try {
+      await api.delete(`/cart/${productId}`);
+      return true;
+    } catch (error) {
+      console.error('Error al eliminar del carrito:', error);
+      throw error;
+    }
   },
+
   clearCart: async () => {
-    const response = await api.delete('/cart');
-    return response.data;
+    try {
+      await api.delete('/cart');
+      return true;
+    } catch (error) {
+      console.error('Error al limpiar el carrito:', error);
+      throw error;
+    }
   },
+
+  checkout: async (cartData) => {
+    try {
+      const response = await api.post('/checkouts', cartData);
+      return response.data;
+    } catch (error) {
+      console.error('Error al procesar el checkout:', error);
+      throw error;
+    }
+  }
 };
 
 // Servicios de descuentos
@@ -154,9 +238,33 @@ export const discountService = {
   },
 };
 
+// Servicios de resumen de compra
+export const purchaseService = {
+  getSummary: async () => {
+    try {
+      const response = await api.get('/purchase/summary');
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener el resumen de compra:', error);
+      throw error;
+    }
+  },
+  
+  applyDiscount: async (discountCode) => {
+    try {
+      const response = await api.post('/discounts/apply', { code: discountCode });
+      return response.data;
+    } catch (error) {
+      console.error('Error al aplicar el código de descuento:', error);
+      throw error;
+    }
+  }
+};
+
 export default {
   auth: authService,
   products: productService,
   cart: cartService,
   discounts: discountService,
+  purchase: purchaseService,
 };

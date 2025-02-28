@@ -1,152 +1,114 @@
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
-import axios from "axios";
+import { cartService } from "../services/api";
 
 const useCart = () => {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
-  const { user } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { token } = useContext(UserContext);
 
+  // Función auxiliar para manejar errores
+  const handleError = (error, customMessage) => {
+    const errorMessage = error.response?.data?.error || customMessage;
+    setError(errorMessage);
+    alert(errorMessage);
+  };
+
+  // Cargar carrito
   const fetchCart = async () => {
-    if (!user.token) return;
+    if (!token) return;
+    
+    setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5001/api/cart', {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      });
-      setCart(response.data);
+      const data = await cartService.getCart();
+      setCart(data);
     } catch (error) {
-      console.error('Error fetching cart:', error);
+      handleError(error, 'Error al cargar el carrito');
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchCart();
-  }, [user]);
-
+  // Agregar al carrito
   const handleAddToCart = async (product) => {
-    try {
-      const response = await axios.post('http://localhost:5001/api/cart', {
-        productId: product.id,
-        quantity: 1
-      }, {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      });
-      setCart([...cart, response.data]);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-    }
-  };
-
-  const handleIncrease = async (id) => {
-    const product = cart.find(item => item.product_id === id);
-    if (product) {
-      try {
-        const response = await axios.post('http://localhost:5001/api/cart', {
-          productId: id,
-          quantity: product.quantity + 1
-        }, {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        });
-        setCart(cart.map(item => item.product_id === id ? response.data : item));
-      } catch (error) {
-        console.error('Error increasing quantity:', error);
-      }
-    }
-  };
-
-  const handleDecrease = async (id) => {
-    const product = cart.find(item => item.product_id === id);
-    if (product && product.quantity > 1) {
-      try {
-        const response = await axios.post('http://localhost:5001/api/cart', {
-          productId: id,
-          quantity: product.quantity - 1
-        }, {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        });
-        setCart(cart.map(item => item.product_id === id ? response.data : item));
-      } catch (error) {
-        console.error('Error decreasing quantity:', error);
-      }
-    } else {
-      handleRemove(id);
-    }
-  };
-
-  const handleRemove = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5001/api/cart/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      });
-      setCart(cart.filter(item => item.product_id !== id));
-    } catch (error) {
-      console.error('Error removing from cart:', error);
-    }
-  };
-
-  const handleClearCart = async () => {
-    try {
-      await axios.delete('http://localhost:5001/api/cart', {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      });
-      setCart([]);
-    } catch (error) {
-      console.error('Error clearing cart:', error);
-    }
-  };
-
-  const handleCheckout = async () => {
-    if (!user.token) {
-      alert('Debes iniciar sesión.');
+    if (!token) {
+      alert('Debes iniciar sesión para agregar productos al carrito');
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5001/api/checkouts',
-        { cart }, {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          },
-        }
-      );
-      if (response.status === 200) {
-        alert('Compra exitosa.');
-        setCart([]);
-      } else {
-        alert('Error al procesar la compra.')
-      }
+      const result = await cartService.addToCart(product.id_producto, 1);
+      setCart([...cart, result]);
+      alert('Producto agregado al carrito exitosamente');
     } catch (error) {
-      console.error('Error al realizar el checkout.', error);
-      alert('Error al realizar la compra. Intente nuevamente.');
+      handleError(error, 'Error al agregar al carrito');
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Actualizar cantidad
+  const handleQuantityChange = async (productId, newQuantity) => {
+    if (newQuantity < 1) {
+      return handleRemove(productId);
+    }
+
+    setLoading(true);
+    try {
+      const result = await cartService.updateQuantity(productId, newQuantity);
+      setCart(cart.map(item => 
+        item.product_id === productId ? result : item
+      ));
+    } catch (error) {
+      handleError(error, 'Error al actualizar cantidad');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Eliminar del carrito
+  const handleRemove = async (productId) => {
+    setLoading(true);
+    try {
+      await cartService.removeFromCart(productId);
+      setCart(cart.filter(item => item.product_id !== productId));
+    } catch (error) {
+      handleError(error, 'Error al eliminar producto');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Efectos
   useEffect(() => {
-    const totalActualizado = cart.reduce((acc, product) => acc + product.price * product.quantity, 0);
-    setTotal(totalActualizado);
+    fetchCart();
+  }, [token]);
+
+  useEffect(() => {
+    const newTotal = cart.reduce((sum, item) => 
+      sum + (item.price * item.quantity), 0);
+    setTotal(newTotal);
   }, [cart]);
 
   return {
     cart,
     total,
+    loading,
+    error,
     handleAddToCart,
-    handleIncrease,
-    handleDecrease,
+    handleQuantityChange,
     handleRemove,
-    handleClearCart,
-    handleCheckout
+    clearCart: async () => {
+      try {
+        await cartService.clearCart();
+        setCart([]);
+      } catch (error) {
+        handleError(error, 'Error al limpiar el carrito');
+      }
+    }
   };
 };
 

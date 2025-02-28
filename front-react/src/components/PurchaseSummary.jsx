@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { UserContext } from "../contexts/UserContext";
+import { cartService } from "../services/api";
 
-const PurchaseSummary = () => {
+const PurchaseSummary = ({ cartItems }) => {
   const { user } = useContext(UserContext);
   const [summary, setSummary] = useState({
     numberOfProducts: 0,
@@ -15,46 +15,44 @@ const PurchaseSummary = () => {
   const [appliedDiscount, setAppliedDiscount] = useState(null);
 
   useEffect(() => {
-    const fetchPurchaseSummary = async () => {
-      try {
-        const response = await axios.get('http://localhost:5001/api/purchase/summary', {
-          headers: {
-            Authorization: `Bearer ${user.token}`
-          }
-        });
-        setSummary(response.data);
-      } catch (error) {
-        console.error('Error fetching purchase summary:', error);
-      }
-    };
-
-    if (user.token) {
-      fetchPurchaseSummary();
+    if (cartItems && cartItems.length > 0) {
+      const numberOfProducts = cartItems.reduce((sum, item) => sum + item.cantidad, 0);
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.cantidad * item.precio_unitario), 0);
+      
+      setSummary({
+        numberOfProducts,
+        subtotal,
+        discounts: appliedDiscount?.amount || 0,
+        shippingCost: 3000,
+        total: subtotal + 3000 - (appliedDiscount?.amount || 0)
+      });
+    } else {
+      setSummary({
+        numberOfProducts: 0,
+        subtotal: 0,
+        discounts: 0,
+        shippingCost: 3000,
+        total: 3000
+      });
     }
-  }, [user]);
+  }, [cartItems, appliedDiscount]);
 
   const applyDiscountCode = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/discounts', {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      });
-      const discount = response.data.find(code => code.code === discountCode);
-      if (discount) {
-        setAppliedDiscount(discount);
-        setSummary(prevSummary => ({
-          ...prevSummary,
-          discounts: discount.amount,
-          total: prevSummary.subtotal + prevSummary.shippingCost - discount.amount
-        }));
-      } else {
-        alert('Código de descuento no válido');
-      }
+      alert('Funcionalidad de descuentos en desarrollo');
     } catch (error) {
-      console.error('Error applying discount code:', error);
+      console.error('Error al aplicar descuento:', error);
+      alert('Error al aplicar el código de descuento');
     }
   };
+
+  if (!user) {
+    return <div className="card border-danger p-3">
+      <div className="card-body">
+        <p className="text-center">Inicia sesión para ver el resumen</p>
+      </div>
+    </div>;
+  }
 
   return (
     <div className="card border-danger p-3" style={{ maxWidth: "350px" }}>
@@ -63,32 +61,41 @@ const PurchaseSummary = () => {
 
         {/* Campo para el cupón de descuento */}
         <div className="mb-3">
-          <label className="form-label">Cupón de descuento aplicado</label>
+          <label className="form-label">Cupón de descuento</label>
           <div className="input-group">
             <input
               type="text"
               className="form-control"
               value={discountCode}
               onChange={(e) => setDiscountCode(e.target.value)}
+              placeholder="Ingresa tu código"
             />
-            <button className="btn btn-warning" onClick={applyDiscountCode}>✔</button>
+            <button 
+              className="btn btn-warning" 
+              onClick={applyDiscountCode}
+              disabled={!discountCode}
+            >
+              ✔
+            </button>
           </div>
         </div>
 
         {/* Resumen de precios */}
         <div className="mb-2">
           <p className="d-flex justify-content-between">
-            <span>Número de productos:</span>
+            <span>Productos:</span>
             <span>{summary.numberOfProducts}</span>
           </p>
           <p className="d-flex justify-content-between">
             <span>Subtotal:</span>
             <span>${summary.subtotal.toLocaleString()} CLP</span>
           </p>
-          <p className="d-flex justify-content-between">
-            <span>Descuentos:</span>
-            <span>${summary.discounts.toLocaleString()} CLP</span>
-          </p>
+          {summary.discounts > 0 && (
+            <p className="d-flex justify-content-between text-success">
+              <span>Descuentos:</span>
+              <span>-${summary.discounts.toLocaleString()} CLP</span>
+            </p>
+          )}
           <p className="d-flex justify-content-between">
             <span>Despacho:</span>
             <span>${summary.shippingCost.toLocaleString()} CLP</span>
@@ -102,8 +109,12 @@ const PurchaseSummary = () => {
         </h5>
 
         {/* Botón */}
-        <button className="btn btn-info w-100 mt-3 fw-bold">
-          Pedir nuevamente
+        <button 
+          className="btn btn-info w-100 mt-3 fw-bold"
+          disabled={summary.numberOfProducts === 0}
+          onClick={() => alert('Funcionalidad de pago en desarrollo')}
+        >
+          Proceder al pago
         </button>
       </div>
     </div>
