@@ -14,7 +14,7 @@ function App() {
   const location = useLocation();
 
   // Rutas donde se oculta el Header
-  const hideHeaderRoutes = ["/principal", "/profile", "/cart"];
+  const hideHeaderRoutes = ["/principal", "/profile", "/cart", "/login", "/register"];
   const isPrincipalRoute = location.pathname === "/principal";
   const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
