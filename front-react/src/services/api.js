@@ -16,21 +16,18 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    console.log('Interceptor de petición:', {
-      url: config.url,
-      method: config.method,
-      tieneToken: !!token,
-      tokenValue: token,
-      headers: config.headers
-    });
+    console.log('Interceptor - Token en localStorage:', token);
+    console.log('Interceptor - Headers antes:', config.headers);
     
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    console.log('Interceptor - Headers después:', config.headers);
     return config;
   },
   (error) => {
-    console.error('Error en la petición:', error);
+    console.error('Error en interceptor:', error);
     return Promise.reject(error);
   }
 );
@@ -77,6 +74,16 @@ export const authService = {
 
   logout: () => {
     localStorage.removeItem('token');
+  },
+
+  updateProfile: async (userData) => {
+    try {
+      const response = await api.put('/auth/profile', userData);
+      return response.data;
+    } catch (error) {
+      console.error('Error actualizando perfil:', error);
+      throw error;
+    }
   },
 };
 

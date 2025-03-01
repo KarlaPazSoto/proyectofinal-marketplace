@@ -57,7 +57,7 @@ const Navbar = () => {
               <Link to="/cart" className="nav-link">
                 Carrito 🛒
               </Link>
-              <button onClick={logoutAndRedirect} className="nav-link btn btn-link">
+              <button onClick={logoutAndRedirect} className="btn-cerrar-sesion">
                 Cerrar Sesión
               </button>
             </div>

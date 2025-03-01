@@ -20,6 +20,7 @@ import Search from '../components/Search';
 import Categorys from '../components/Categorys';
 import UserInfo from '../pages/profile/UserInfo';
 import PurchaseSummary from '../components/PurchaseSummary';
+import EditProfile from '../pages/profile/EditProfile';
 
 function AppRoutes() {
   const { token } = useContext(UserContext);
@@ -53,6 +54,7 @@ function AppRoutes() {
           <Route path="/categorys" element={<Categorys />} />
           <Route path="/user-info" element={<UserInfo />} />
           <Route path="/purchase-summary" element={<PurchaseSummary />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
           {/* Cualquier otra ruta desconocida lo manda al Home */}
           <Route path="*" element={<Navigate to="/" />} />
         </>

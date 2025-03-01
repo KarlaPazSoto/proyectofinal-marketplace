@@ -8,6 +8,7 @@ import { UserContext } from '../../contexts/UserContext';
 
 const Profile = () => {
   const { profile, setProfile } = useContext(UserContext);
+  console.log('Valores del contexto:', { profile, setProfile });
 
   useEffect(() => {
     const fetchProfile = async () => {

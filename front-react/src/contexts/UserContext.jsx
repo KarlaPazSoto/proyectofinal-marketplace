@@ -8,20 +8,25 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
+    console.log('UserContext - Token actual:', token);
     if (token) {
+      console.log('UserContext - Intentando obtener perfil con token');
       localStorage.setItem('token', token);
       fetchProfile();
     } else {
+      console.log('UserContext - No hay token, limpiando localStorage');
       localStorage.removeItem('token');
     }
   }, [token]); // Se ejecuta cuando cambia el token
 
   const fetchProfile = async () => {
     try {
+      console.log('UserContext - Iniciando fetchProfile');
       const userProfile = await authService.getProfile();
+      console.log('UserContext - Perfil obtenido:', userProfile);
       setProfile(userProfile);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error('UserContext - Error en fetchProfile:', error);
       handleLogout();
     }
   };
@@ -33,8 +38,15 @@ export const UserProvider = ({ children }) => {
     }
 
     try {
+      console.log('Login - Iniciando proceso de login');
       const response = await authService.login({ email, password });
-      setToken(response.token); // Almacena el token en el estado
+      console.log('Login - Respuesta recibida:', response);
+      console.log('Login - Token recibido:', response.token);
+      
+      setToken(response.token);
+      console.log('Login - Token guardado en estado:', response.token);
+      console.log('Login - Token en localStorage:', localStorage.getItem('token'));
+      
       alert('Ingreso exitoso.');
       return response;
     } catch (error) {
@@ -81,6 +93,7 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider value={{ 
       profile,
       user: profile, // Alias de profile
+      setProfile,
       token,
       handleLogin, 
       handleRegister,

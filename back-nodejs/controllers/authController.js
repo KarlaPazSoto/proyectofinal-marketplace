@@ -83,8 +83,58 @@ const getProfile = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { nombre, email, telefono, direccion } = req.body;
+
+    // Validaciones
+    if (!nombre || !email || !telefono || !direccion) {
+      return res.status(400).json({ error: 'Todos los campos son requeridos' });
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      return res.status(400).json({ error: 'El correo no es válido' });
+    }
+
+    // Verificar si el email ya existe (si se está cambiando)
+    const emailCheck = await db.query(
+      'SELECT id FROM usuarios WHERE email = $1 AND id != $2',
+      [email, userId]
+    );
+    if (emailCheck.rows.length > 0) {
+      return res.status(400).json({ error: 'El email ya está en uso' });
+    }
+
+    // Actualizar el perfil
+    const result = await db.query(
+      `UPDATE usuarios 
+       SET nombre = $1, 
+           email = $2, 
+           telefono = $3, 
+           direccion = $4,
+           fecha_actualizacion = NOW()
+       WHERE id = $5 
+       RETURNING id, nombre, email, telefono, direccion, tipo_usuario, estado`,
+      [nombre, email, telefono, direccion, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error al actualizar perfil:', error);
+    res.status(500).json({ 
+      error: 'Error al actualizar el perfil',
+      details: error.message 
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
+  updateProfile
 };
