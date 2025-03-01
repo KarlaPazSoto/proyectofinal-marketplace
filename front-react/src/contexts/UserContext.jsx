@@ -8,12 +8,13 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    if (savedToken) {
-      setToken(savedToken);
+    if (token) {
+      localStorage.setItem('token', token);
       fetchProfile();
+    } else {
+      localStorage.removeItem('token');
     }
-  }, []);
+  }, [token]); // Se ejecuta cuando cambia el token
 
   const fetchProfile = async () => {
     try {
@@ -33,17 +34,11 @@ export const UserProvider = ({ children }) => {
 
     try {
       const response = await authService.login({ email, password });
-      setToken(response.token);
-      await fetchProfile();
+      setToken(response.token); // Almacena el token en el estado
       alert('Ingreso exitoso.');
       return response;
     } catch (error) {
       console.error('Error en login:', error);
-      console.error('Detalles:', {
-        mensaje: error.message,
-        respuesta: error.response?.data,
-        estado: error.response?.status
-      });
       alert('Error en el inicio de sesión.');
       throw error;
     }
@@ -78,16 +73,14 @@ export const UserProvider = ({ children }) => {
     setProfile(null);
     setToken(null);
     authService.logout();
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
+    localStorage.clear(); // Limpia todos los datos de localStorage
     alert('Sesión cerrada exitosamente.');
   };
 
   return (
     <UserContext.Provider value={{ 
       profile,
-      user: profile, // Mantener user como alias de profile
-      setProfile, 
+      user: profile, // Alias de profile
       token,
       handleLogin, 
       handleRegister,

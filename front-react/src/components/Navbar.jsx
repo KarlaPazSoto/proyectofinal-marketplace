@@ -1,10 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../contexts/UserContext"; // Importa UserContext
 import "../styles/Navbar.css";
 import logo from "../assets/img/logo-horizontal.png";
 import Search from "./Search";
 
 const Navbar = () => {
+  const { handleLogout } = useContext(UserContext); // Obtiene la función de logout
+  const navigate = useNavigate(); // Hook para redireccionar
+
+  const logoutAndRedirect = () => {
+    handleLogout(); // Cierra sesión
+    navigate("/principal"); // Redirige a /principal
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg custom-navbar flex-column">
@@ -48,12 +57,9 @@ const Navbar = () => {
               <Link to="/cart" className="nav-link">
                 Carrito 🛒
               </Link>
-              <Link to="/principal" className="nav-link">
+              <button onClick={logoutAndRedirect} className="nav-link btn btn-link">
                 Cerrar Sesión
-              </Link>
-              <Link to="/principal" className="nav-link">
-                Principal
-              </Link>
+              </button>
             </div>
           </div>
         </div>

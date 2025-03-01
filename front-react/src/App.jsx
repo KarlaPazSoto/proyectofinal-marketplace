@@ -10,22 +10,26 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useLocation } from 'react-router-dom';
 
 function App() {
-  const {user} = useContext(UserContext);
+  const { token } = useContext(UserContext);
   const location = useLocation();
-  
- // Definir rutas donde NO se debe mostrar el Header
- const hiddenHeaderRoutes = ["/principal", "/profile", "/cart", "/register", "/login"];
+
+  // Rutas donde se oculta el Header
+  const hideHeaderRoutes = ["/principal", "/profile", "/cart"];
+  const isPrincipalRoute = location.pathname === "/principal";
+  const hideHeader = hideHeaderRoutes.includes(location.pathname);
 
   return (
     <UserProvider>
       <div className="d-flex flex-column min-vh-100 all-body">
-        <Navbar />
+        {/* Navbar solo se oculta en "/principal" */}
+        {!isPrincipalRoute && <Navbar />}
         <main className="flex-grow-1">
-          {/* Si la ruta no está en hiddenHeaderRoutes, mostrar el Header */}
-          {!hiddenHeaderRoutes.includes(location.pathname) && <Header />} 
+          {/* Header se oculta en "/principal", "/profile" y "/cart" */}
+          {!hideHeader && <Header />}
           <AppRoutes />
         </main>
-        <Footer />
+        {/* Footer solo se oculta en "/principal" */}
+        {!isPrincipalRoute && <Footer />}
       </div>
     </UserProvider>
   );
