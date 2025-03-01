@@ -40,14 +40,17 @@ export const UserProvider = ({ children }) => {
     try {
       console.log('Login - Iniciando proceso de login');
       const response = await authService.login({ email, password });
-      console.log('Login - Respuesta recibida:', response);
-      console.log('Login - Token recibido:', response.token);
+      console.log('Login - Respuesta completa:', response);
       
-      setToken(response.token);
-      console.log('Login - Token guardado en estado:', response.token);
-      console.log('Login - Token en localStorage:', localStorage.getItem('token'));
+      // Actualizar el token en el estado
+      setToken(response.accessToken);
       
-      alert('Ingreso exitoso.');
+      // Actualizar el perfil
+      await fetchProfile();
+      
+      // Redirigir al home
+      window.location.href = '/'; // o usar navigate('/') si estás usando useNavigate
+      
       return response;
     } catch (error) {
       console.error('Error en login:', error);
@@ -92,9 +95,9 @@ export const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider value={{ 
       profile,
-      user: profile, // Alias de profile
-      setProfile,
+      user: profile,
       token,
+      setProfile,
       handleLogin, 
       handleRegister,
       handleLogout 

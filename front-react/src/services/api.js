@@ -50,16 +50,25 @@ export const authService = {
   login: async (credentials) => {
     try {
       const response = await api.post('/auth/login', credentials);
-      console.log('Respuesta del servidor login:', response.data);
+      const { accessToken, refreshToken, user } = response.data;
       
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-      }
+      // Guardar ambos tokens
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      
+      console.log('Login exitoso:', { user });
+      console.log('Access Token:', localStorage.getItem('token'));
+      console.log('Refresh Token:', localStorage.getItem('refreshToken'));
       return response.data;
     } catch (error) {
-      console.error('Error en login:', error.response?.data);
+      console.error('Error en login:', error);
       throw error;
     }
+  },
+
+  logout: () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
   },
 
   getProfile: async () => {
@@ -67,13 +76,34 @@ export const authService = {
       const response = await api.get('/auth/profile');
       return response.data;
     } catch (error) {
-      console.error('Error obteniendo perfil:', error.response?.data);
+      console.error('Error obteniendo perfil:', error);
       throw error;
     }
   },
 
-  logout: () => {
-    localStorage.removeItem('token');
+  refreshToken: async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (!refreshToken) {
+        throw new Error('No refresh token available');
+      }
+
+      const response = await api.post('/auth/refresh', { refreshToken });
+      const { accessToken } = response.data;
+      
+      localStorage.setItem('token', accessToken);
+      return accessToken;
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      // Si falla el refresh, limpiamos los tokens
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      throw error;
+    }
+  },
+
+  hasValidToken: () => {
+    return !!localStorage.getItem('token');
   },
 
   updateProfile: async (userData) => {
@@ -275,3 +305,5 @@ export default {
   discounts: discountService,
   purchase: purchaseService,
 };
+
+console.log('¿Tiene token válido?:', authService.hasValidToken());

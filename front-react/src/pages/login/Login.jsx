@@ -16,9 +16,11 @@ const Login = () => {
     setIsLoading(true);
     
     try {
+      console.log('Login - Intentando iniciar sesión con:', email);
       await handleLogin(email, password);
-      navigate('/');
+      console.log('Login - Inicio de sesión exitoso');
     } catch (error) {
+      console.error('Login - Error:', error);
       setError(error.response?.data?.error || 'Error al iniciar sesión');
     } finally {
       setIsLoading(false);

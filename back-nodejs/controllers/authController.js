@@ -35,41 +35,85 @@ const register = async (req, res) => {
   }
 };
 
+const generateTokens = (userId) => {
+  const accessToken = jwt.sign(
+    { userId }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: '1h' }
+  );
+  
+  const refreshToken = jwt.sign(
+    { userId }, 
+    process.env.REFRESH_SECRET, 
+    { expiresIn: '7d' }
+  );
+  
+  return { accessToken, refreshToken };
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
-
-  // Validaciones
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
-  } else if (!/\S+@\S+\.\S+/.test(email)) {
-    return res.status(400).json({ error: 'Email is not valid' });
-  }
+  
+  console.log('Intento de login:', { email }); // No logear la contraseña
 
   try {
+    console.log('Buscando usuario en la base de datos...');
     const result = await db.query('SELECT * FROM usuarios WHERE email = $1', [email]);
+    console.log('Usuario encontrado:', result.rows.length > 0);
+
     const user = result.rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.hashed_password))) {
+      console.log('Credenciales inválidas');
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    console.log('Generando tokens...');
+    const { accessToken, refreshToken } = generateTokens(user.id);
+    
+    console.log('Guardando refresh token...');
+    await db.query(
+      'UPDATE usuarios SET refresh_token = $1, refresh_token_expires_at = NOW() + INTERVAL \'7 days\' WHERE id = $2',
+      [refreshToken, user.id]
+    );
+
+    console.log('Login exitoso');
+    res.json({ 
+      accessToken, 
+      refreshToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        nombre: user.nombre
+      }
+    });
   } catch (error) {
+    console.error('Error detallado en login:', error);
     res.status(500).json({ error: 'Error logging in' });
   }
 };
 
 const getProfile = async (req, res) => {
   try {
-    console.log('Token decodificado:', req.user);  // Ver qué contiene el token
+    console.log('Token decodificado:', req.user);
     
+    // Modificamos la consulta para seleccionar solo los campos necesarios
     const result = await db.query(
-      'SELECT * FROM usuarios WHERE id = $1',
+      `SELECT 
+        id, 
+        nombre, 
+        email, 
+        telefono, 
+        direccion, 
+        tipo_usuario, 
+        fecha_registro, 
+        estado
+      FROM usuarios 
+      WHERE id = $1`,
       [req.user.userId]
     );
     
-    console.log('Resultado de la consulta:', result.rows);  // Ver qué devuelve la consulta
+    console.log('Resultado de la consulta:', result.rows);
     
     const user = result.rows[0];
     if (!user) {
@@ -132,9 +176,44 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const refreshToken = async (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(400).json({ error: 'Refresh token is required' });
+  }
+
+  try {
+    // Verificar si el refresh token es válido y no ha expirado
+    const result = await db.query(
+      'SELECT * FROM usuarios WHERE refresh_token = $1 AND refresh_token_expires_at > NOW()',
+      [refreshToken]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(401).json({ error: 'Invalid or expired refresh token' });
+    }
+
+    const user = result.rows[0];
+    
+    // Generar nuevo access token
+    const accessToken = jwt.sign(
+      { userId: user.id }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: '1h' }
+    );
+
+    res.json({ accessToken });
+  } catch (error) {
+    console.error('Error en refresh token:', error);
+    res.status(500).json({ error: 'Error refreshing token' });
+  }
+};
+
 module.exports = {
   register,
   login,
   getProfile,
-  updateProfile
+  updateProfile,
+  refreshToken
 };
