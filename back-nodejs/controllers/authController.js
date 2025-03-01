@@ -1,19 +1,24 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const db = require('../config/db');
+// Importaciones.
+const bcrypt = require('bcrypt'); // Para encriptar la contraseña.
+const jwt = require('jsonwebtoken'); //Para crear tokens de autenticación.
+const db = require('../config/db'); // Para interacturar con la base de datos.
 
+//Registro del usuario.
 const register = async (req, res) => {
   const { email, password, nombre, telefono, direccion, tipo_usuario } = req.body;
 
-  // Validaciones
+  // Validaciones de los campos.
   if (!email || !password || !nombre || !telefono || !direccion || !tipo_usuario) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
+  //Validamos el correo con regex.
   } else if (!/\S+@\S+\.\S+/.test(email)) {
     return res.status(400).json({ error: 'El correo no es válido' });
+  //Validamos que la contraseña tenga al menos 6 caracteres.
   } else if (password.length < 6) {
     return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
   }
 
+  //Encriptamos la contraseña.
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
