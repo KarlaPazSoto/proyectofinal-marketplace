@@ -27,13 +27,19 @@ const EditProfile = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      // Aquí implementaremos la llamada a la API para actualizar el perfil
+      console.log('Datos a enviar:', formData);
       const updatedProfile = await authService.updateProfile(formData);
+      console.log('Respuesta del servidor:', updatedProfile);
       setProfile(updatedProfile);
       alert('Perfil actualizado exitosamente');
       navigate('/profile');
     } catch (error) {
-      console.error('Error al actualizar perfil:', error);
+      console.error('Error detallado:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        estado: error.response?.status,
+        datos: formData
+      });
       alert('Error al actualizar el perfil');
     } finally {
       setIsLoading(false);

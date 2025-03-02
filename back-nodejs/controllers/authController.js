@@ -132,24 +132,39 @@ const updateProfile = async (req, res) => {
     const userId = req.user.userId;
     const { nombre, email, telefono, direccion } = req.body;
 
+    console.log('Datos recibidos en updateProfile:', {
+      userId,
+      nombre,
+      email,
+      telefono,
+      direccion
+    });
+
     // Validaciones
     if (!nombre || !email || !telefono || !direccion) {
+      console.log('Faltan campos requeridos');
       return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
     if (!/\S+@\S+\.\S+/.test(email)) {
+      console.log('Email inválido:', email);
       return res.status(400).json({ error: 'El correo no es válido' });
     }
 
-    // Verificar si el email ya existe (si se está cambiando)
+    // Verificar si el email ya existe
+    console.log('Verificando duplicidad de email...');
     const emailCheck = await db.query(
       'SELECT id FROM usuarios WHERE email = $1 AND id != $2',
       [email, userId]
     );
+    console.log('Resultado verificación email:', emailCheck.rows);
+
     if (emailCheck.rows.length > 0) {
+      console.log('Email duplicado encontrado');
       return res.status(400).json({ error: 'El email ya está en uso' });
     }
 
     // Actualizar el perfil
+    console.log('Intentando actualizar usuario...');
     const result = await db.query(
       `UPDATE usuarios 
        SET nombre = $1, 
@@ -162,13 +177,21 @@ const updateProfile = async (req, res) => {
       [nombre, email, telefono, direccion, userId]
     );
 
+    console.log('Resultado de la actualización:', result.rows);
+
     if (result.rows.length === 0) {
+      console.log('Usuario no encontrado para ID:', userId);
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error al actualizar perfil:', error);
+    console.error('Error detallado al actualizar perfil:', {
+      message: error.message,
+      stack: error.stack,
+      query: error.query,
+      parameters: error.parameters
+    });
     res.status(500).json({ 
       error: 'Error al actualizar el perfil',
       details: error.message 
