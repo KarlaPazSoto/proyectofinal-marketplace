@@ -22,9 +22,9 @@ const ProfileActions = () => {
           <button className='btn-actions'>Mis publicaciones</button>
           </Link>
 
-          <Link to='/purchases'>
+          {/* <Link to='/purchases'>
           <button className='btn-actions'>Mis compras</button>
-          </Link>
+          </Link> */}
 
           <button 
             className='btn-actions' 

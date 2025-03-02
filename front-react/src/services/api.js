@@ -194,10 +194,26 @@ export const authService = {
 export const productService = {
   getAllProducts: async () => {
     try {
+      console.log('Solicitando productos del usuario...');
       const response = await api.get('/productos/user/products');
-      return response.data.data;
+      console.log('Respuesta completa:', response);
+      
+      // Asegurarnos de que los datos tienen el formato correcto
+      const productos = response.data.data.map(producto => ({
+        id: producto.id_producto,
+        nombre: producto.nombre_producto,
+        descripcion: producto.descripcion,
+        precio: producto.precio,
+        stock: producto.stock,
+        categoria: producto.categoria,
+        imagenes: Array.isArray(producto.imagenes) ? producto.imagenes : [],
+        estado: producto.estado
+      }));
+
+      console.log('Productos procesados:', productos);
+      return productos;
     } catch (error) {
-      console.error('Error obteniendo productos:', error);
+      console.error('Error en getAllProducts:', error);
       throw error;
     }
   },
@@ -216,10 +232,34 @@ export const productService = {
   },
   updateProduct: async (productId, productData) => {
     try {
+      console.log('Enviando petición de actualización:', {
+        url: `/productos/${productId}`,
+        datos: productData
+      });
+
       const response = await api.put(`/productos/${productId}`, productData);
-      return response.data.data;
+      console.log('Respuesta de actualización:', response.data);
+
+      // Asegurarnos de que los datos tienen el formato correcto
+      const productoActualizado = {
+        id: response.data.data.id_producto,
+        nombre: response.data.data.nombre_producto,
+        descripcion: response.data.data.descripcion,
+        precio: response.data.data.precio,
+        stock: response.data.data.stock,
+        categoria: response.data.data.categoria,
+        imagenes: Array.isArray(response.data.data.imagenes) ? response.data.data.imagenes : [],
+        estado: response.data.data.estado
+      };
+
+      return productoActualizado;
     } catch (error) {
-      console.error('Error actualizando producto:', error);
+      console.error('Error detallado en updateProduct:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        estado: error.response?.status,
+        datos: productData
+      });
       throw error;
     }
   },

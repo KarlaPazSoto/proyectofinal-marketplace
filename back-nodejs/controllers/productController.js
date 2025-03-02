@@ -59,11 +59,11 @@ const productController = {
   createProduct: async (req, res) => {
     try {
       // Obtener datos del body y el ID del usuario del token
-      const { nombre, descripcion, precio, stock, categoria, imagenes } = req.body;
+      const { nombre_producto, descripcion, precio, stock, categoria, imagenes } = req.body;
       const userId = req.user.userId;
 
       console.log('Datos recibidos:', {
-        nombre,
+        nombre_producto,
         descripcion,
         precio,
         stock,
@@ -73,7 +73,7 @@ const productController = {
       });
 
       // Validar datos requeridos
-      if (!nombre || !precio || !stock || !categoria) {
+      if (!nombre_producto || !precio || !stock || !categoria) {
         return res.status(400).json({
           success: false,
           message: 'Faltan campos requeridos'
@@ -84,15 +84,15 @@ const productController = {
         `INSERT INTO productos 
          (id_usuario, nombre_producto, descripcion, precio, stock, categoria, imagenes, estado) 
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
-         RETURNING *`,
+         RETURNING id_producto, nombre_producto, descripcion, precio, stock, categoria, imagenes, estado`,
         [
           userId,
-          nombre,
+          nombre_producto,
           descripcion || '',
           precio,
           stock,
           categoria,
-          imagenes ? [imagenes] : [], // Convertir a array ya que imagenes es TEXT[]
+          imagenes ? [imagenes] : [], // Convertir a array
           'disponible'
         ]
       );
@@ -117,31 +117,108 @@ const productController = {
 
   //Actualizamos un producto que ya existe.
   updateProduct: async (req, res) => {
-    const {id} = req.params;
-    const {nombre, precio, descripcion, stock, categoria, imagenes, estado} = req.body;
-
+    const { id } = req.params;
+    
     try {
-      const result = await db.query(
-        'UPDATE productos SET nombre = $1, precio = $2, descripcion = $3, stock = $4, categoria = $5, imagenes = $6, estado = $7 WHERE id_producto = $8 RETURNING *',
-        [nombre, precio, descripcion, stock, categoria, imagenes, estado, id]
-      );
+      // Log completo de la petición
+      console.log('=== Inicio de updateProduct ===');
+      console.log('Params:', { id });
+      console.log('Body completo:', req.body);
+      console.log('Headers:', req.headers);
+      
+      // Extraer los datos del body con valores por defecto
+      const {
+        nombre_producto,
+        descripcion = '',
+        precio,
+        stock,
+        categoria,
+        imagenes,
+        estado = 'disponible'
+      } = req.body;
+
+      // Log de los datos extraídos
+      console.log('Datos extraídos:', {
+        nombre_producto,
+        descripcion,
+        precio,
+        stock,
+        categoria,
+        imagenes,
+        estado
+      });
+
+      // Validar que tenemos los datos necesarios
+      if (!nombre_producto || !precio || !stock || !categoria) {
+        console.log('Faltan campos requeridos:', { nombre_producto, precio, stock, categoria });
+        return res.status(400).json({
+          success: false,
+          message: 'Faltan campos requeridos',
+          received: { nombre_producto, precio, stock, categoria }
+        });
+      }
+
+      // Log de la consulta SQL que vamos a ejecutar
+      const query = `
+        UPDATE productos 
+        SET nombre_producto = $1, 
+            descripcion = $2, 
+            precio = $3, 
+            stock = $4, 
+            categoria = $5, 
+            imagenes = $6, 
+            estado = $7 
+        WHERE id_producto = $8 
+        RETURNING *`;
+
+      console.log('Query a ejecutar:', query);
+      console.log('Valores:', [
+        nombre_producto,
+        descripcion,
+        precio,
+        stock,
+        categoria,
+        imagenes ? [imagenes] : [],
+        estado,
+        id
+      ]);
+
+      const result = await db.query(query, [
+        nombre_producto,
+        descripcion,
+        precio,
+        stock,
+        categoria,
+        imagenes ? [imagenes] : [],
+        estado,
+        id
+      ]);
 
       if (result.rowCount === 0) {
+        console.log('No se encontró el producto con id:', id);
         return res.status(404).json({
-          sucess: false,
+          success: false,
           message: 'Producto no encontrado.'
         });
       }
 
+      console.log('Producto actualizado exitosamente:', result.rows[0]);
+
       res.status(200).json({
-        sucess: true,
+        success: true,
         message: 'Producto actualizado exitosamente.',
         data: result.rows[0]
       });
-    }catch (error) {
-      console.error('Error en updateProduct:', error);
+    } catch (error) {
+      console.error('Error detallado en updateProduct:', {
+        message: error.message,
+        code: error.code,
+        detail: error.detail,
+        body: req.body,
+        stack: error.stack
+      });
       res.status(500).json({
-        sucess: false,
+        success: false,
         message: 'Error al actualizar el producto.',
         error: error.message
       });
@@ -205,7 +282,7 @@ const productController = {
 
     try{
       const result = await db.query(
-        'SELECT * FROM productos WHERE nombre ILIKE $1',
+        'SELECT * FROM productos WHERE nombre_producto ILIKE $1',
         [`%${q}%`] //El % es para que se pueda buscar por cualquier parte del nombre.
       );
 
@@ -230,7 +307,18 @@ const productController = {
       const userId = req.user.userId; // Obtenemos el ID del usuario del token.
       
       const result = await db.query(
-        'SELECT * FROM productos WHERE id_usuario = $1 ORDER BY id_producto',
+        `SELECT 
+          id_producto, 
+          nombre_producto, 
+          descripcion, 
+          precio, 
+          stock, 
+          categoria, 
+          imagenes[1] as imagen, 
+          estado
+         FROM productos 
+         WHERE id_usuario = $1 
+         ORDER BY id_producto`,
         [userId]
       );
 

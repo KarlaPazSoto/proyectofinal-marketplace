@@ -16,12 +16,24 @@ const Feed = () => {
     try {
       setLoading(true);
       setError(null);
+      console.log('Iniciando fetchProducts...');
       const data = await productService.getAllProducts();
-      // Asegurarse de que data sea un array
-      setProductos(Array.isArray(data) ? data : []);
-      console.log('Productos cargados:', data); // Para debugging
+      console.log('Datos recibidos de getAllProducts:', data);
+      
+      // Verificar la estructura de los datos
+      if (Array.isArray(data)) {
+        console.log('IDs de productos:', data.map(p => p.id_producto || p.id));
+        setProductos(data);
+      } else {
+        console.log('Datos no son un array:', data);
+        setProductos([]);
+      }
     } catch (error) {
-      console.error('Error al cargar productos:', error);
+      console.error('Error detallado en fetchProducts:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       setError('Error al cargar los productos. Por favor, intente más tarde.');
     } finally {
       setLoading(false);
@@ -51,13 +63,25 @@ const Feed = () => {
 
   const handleUpdateProduct = async (productId, updatedData) => {
     try {
+      console.log('Intentando actualizar producto:', {
+        id: productId,
+        datos: updatedData
+      });
+
       const updatedProduct = await productService.updateProduct(productId, updatedData);
+      console.log('Respuesta del servidor:', updatedProduct);
+
       setProductos(productos.map(p => 
-        p.id === productId ? updatedProduct : p
+        p.id_producto === productId || p.id === productId ? updatedProduct : p
       ));
       setEditingProduct(null);
     } catch (error) {
-      console.error('Error al actualizar:', error);
+      console.error('Error detallado al actualizar:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        estado: error.response?.status,
+        datos: updatedData
+      });
       setError('Error al actualizar el producto');
     }
   };

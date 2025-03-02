@@ -3,12 +3,12 @@ import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 
 const EditProduct = ({ producto, handleUpdateProduct, onCancel }) => {
   const [formData, setFormData] = useState({
-    nombre: producto.nombre || '',
+    nombre_producto: producto.nombre || '',
     descripcion: producto.descripcion || '',
     precio: producto.precio || 0,
     stock: producto.stock || 0,
     categoria: producto.categoria || '',
-    imagen: producto.imagen || ''
+    imagenes: producto.imagen || ''
   });
 
   const categorias = [
@@ -31,9 +31,27 @@ const EditProduct = ({ producto, handleUpdateProduct, onCancel }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await handleUpdateProduct(producto._id, formData);
+      // Log de los datos que estamos enviando
+      console.log('Datos a actualizar:', {
+        id: producto.id_producto || producto.id,
+        formData
+      });
+
+      // Convertir los datos al formato correcto
+      const productoData = {
+        nombre_producto: formData.nombre_producto,
+        descripcion: formData.descripcion,
+        precio: parseFloat(formData.precio),
+        stock: parseInt(formData.stock),
+        categoria: formData.categoria,
+        imagenes: formData.imagenes ? [formData.imagenes] : [],
+        estado: producto.estado || 'disponible'
+      };
+
+      console.log('Datos formateados para enviar:', productoData);
+      await handleUpdateProduct(producto.id_producto || producto.id, productoData);
     } catch (error) {
-      console.error('Error al actualizar el producto:', error);
+      console.error('Error en handleSubmit de EditProduct:', error);
     }
   };
 
@@ -51,8 +69,8 @@ const EditProduct = ({ producto, handleUpdateProduct, onCancel }) => {
                   <Form.Label>Nombre del Producto</Form.Label>
                   <Form.Control
                     type="text"
-                    name="nombre"
-                    value={formData.nombre}
+                    name="nombre_producto"
+                    value={formData.nombre_producto}
                     onChange={handleChange}
                     required
                   />
@@ -126,8 +144,8 @@ const EditProduct = ({ producto, handleUpdateProduct, onCancel }) => {
               <Form.Label>URL de la Imagen</Form.Label>
               <Form.Control
                 type="url"
-                name="imagen"
-                value={formData.imagen}
+                name="imagenes"
+                value={formData.imagenes}
                 onChange={handleChange}
                 placeholder="https://ejemplo.com/imagen.jpg"
               />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Card, Row, Col } from 'react-bootstrap';
+import { Form, Button, Card, Row, Col, Alert } from 'react-bootstrap';
 
 const AddProduct = ({ handleAddProduct, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +10,8 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
     categoria: '',
     imagenes: ''
   });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const categorias = [
     'Electrónica',
@@ -42,18 +44,19 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
       // Convertir precio y stock a números
       const productoData = {
         nombre: formData.nombre,
-        descripcion: formData.descripcion,
+        descripcion: formData.descripcion || '',
         precio: parseFloat(formData.precio),
         stock: parseInt(formData.stock),
         categoria: formData.categoria,
-        imagenes: formData.imagenes ? formData.imagenes : null
+        imagenes: formData.imagenes || null
       };
 
+      console.log('Enviando datos del producto:', productoData);
       await handleAddProduct(productoData);
       onCancel();
     } catch (error) {
+      console.error('Error detallado:', error);
       setError(error.message || 'Error al crear el producto');
-      console.error('Error al crear producto:', error);
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +68,12 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
         <h3 className="mb-0">Agregar Nuevo Producto</h3>
       </Card.Header>
       <Card.Body>
+        {error && (
+          <Alert variant="danger" className="mb-3">
+            {error}
+          </Alert>
+        )}
+        
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col md={6}>
@@ -158,14 +167,16 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
             <Button 
               variant="outline-secondary" 
               onClick={onCancel}
+              disabled={isLoading}
             >
               Cancelar
             </Button>
             <Button 
               variant="primary" 
               type="submit"
+              disabled={isLoading}
             >
-              Crear Producto
+              {isLoading ? 'Creando...' : 'Crear Producto'}
             </Button>
           </div>
         </Form>
