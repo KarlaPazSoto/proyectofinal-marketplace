@@ -58,11 +58,14 @@ const productController = {
   //Creamos un nuevo producto.
   createProduct: async (req, res) => {
     try {
+      console.log('Datos recibidos en createProduct:', req.body);
+      
       // Obtener datos del body y el ID del usuario del token
       const { nombre_producto, descripcion, precio, stock, categoria, imagenes } = req.body;
       const userId = req.user.userId;
 
-      console.log('Datos recibidos:', {
+      // Log detallado de los datos
+      console.log('Datos procesados:', {
         nombre_producto,
         descripcion,
         precio,
@@ -74,9 +77,11 @@ const productController = {
 
       // Validar datos requeridos
       if (!nombre_producto || !precio || !stock || !categoria) {
+        console.log('Faltan campos requeridos:', { nombre_producto, precio, stock, categoria });
         return res.status(400).json({
           success: false,
-          message: 'Faltan campos requeridos'
+          message: 'Faltan campos requeridos',
+          received: { nombre_producto, precio, stock, categoria }
         });
       }
 
@@ -92,7 +97,7 @@ const productController = {
           precio,
           stock,
           categoria,
-          imagenes ? [imagenes] : [], // Convertir a array
+          imagenes || [],
           'disponible'
         ]
       );
@@ -105,12 +110,16 @@ const productController = {
         data: result.rows[0]
       });
     } catch (error) {
-      console.error('Error detallado en createProduct:', error);
+      console.error('Error detallado en createProduct:', {
+        message: error.message,
+        code: error.code,
+        detail: error.detail,
+        body: req.body
+      });
       res.status(500).json({
         success: false,
         message: 'Error al crear el producto',
-        error: error.message,
-        details: error.stack
+        error: error.message
       });
     }
   },
@@ -280,21 +289,36 @@ const productController = {
   searchProducts: async (req, res) => {
     const {q} = req.query; //Q vendría a ser el término para buscar el producto.
 
-    try{
+    try {
+      console.log('Buscando productos con término:', q);
+
       const result = await db.query(
-        'SELECT * FROM productos WHERE nombre_producto ILIKE $1',
-        [`%${q}%`] //El % es para que se pueda buscar por cualquier parte del nombre.
+        `SELECT 
+          id_producto,
+          nombre_producto,
+          descripcion,
+          precio,
+          stock,
+          categoria,
+          imagenes,
+          estado
+         FROM productos 
+         WHERE nombre_producto ILIKE $1 OR descripcion ILIKE $1
+         ORDER BY nombre_producto`,
+        [`%${q}%`]
       );
 
-      resizeTo.status(200).json({
+      console.log(`Se encontraron ${result.rowCount} productos`);
+
+      res.status(200).json({
         success: true,
         data: result.rows,
         count: result.rowCount
-    });
-    }catch (error) {
+      });
+    } catch (error) {
       console.error('Error en searchProducts:', error);
       res.status(500).json({
-        sucess: false,
+        success: false,
         message: 'Error al buscar los productos.',
         error: error.message
       });

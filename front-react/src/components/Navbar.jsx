@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext"; // Importa UserContext
 import "../styles/Navbar.css";
 import logo from "../assets/img/logo-horizontal.png";
-import Search from "./Search";
+import Search from "../pages/search/Search";
 
 const Navbar = () => {
   const { handleLogout } = useContext(UserContext); // Obtiene la función de logout
@@ -62,11 +62,6 @@ const Navbar = () => {
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Barra de búsqueda móvil */}
-        <div className="container-fluid d-lg-none mt-2">
-          <Search />
         </div>
       </nav>
     </div>

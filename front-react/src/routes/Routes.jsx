@@ -16,11 +16,12 @@ import Principal from '../pages/principal/Principal';
 import ProtectedRoute from './ProtectedRoute';
 import Cart from '../components/Cart';
 import Carousel from '../components/Carousel';
-import Search from '../components/Search';
+import Search from "../pages/search/Search";
 import Categorys from '../components/Categorys';
 import UserInfo from '../pages/profile/UserInfo';
 import PurchaseSummary from '../components/PurchaseSummary';
 import EditProfile from '../pages/profile/EditProfile';
+import SearchPage from '../pages/search/SearchPage';
 
 function AppRoutes() {
   const { token } = useContext(UserContext);
@@ -50,7 +51,7 @@ function AppRoutes() {
           <Route path="/pagination" element={<Pagination />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/post-details" element={<PostDetails />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/categorys" element={<Categorys />} />
           <Route path="/user-info" element={<UserInfo />} />
           <Route path="/purchase-summary" element={<PurchaseSummary />} />

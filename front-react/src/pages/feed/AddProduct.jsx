@@ -43,20 +43,26 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
 
       // Convertir precio y stock a números
       const productoData = {
-        nombre: formData.nombre,
+        nombre_producto: formData.nombre,
         descripcion: formData.descripcion || '',
         precio: parseFloat(formData.precio),
         stock: parseInt(formData.stock),
         categoria: formData.categoria,
-        imagenes: formData.imagenes || null
+        imagenes: formData.imagenes ? [formData.imagenes.trim()] : []
       };
 
-      console.log('Enviando datos del producto:', productoData);
+      console.log('Datos del formulario:', formData);
+      console.log('Datos formateados para enviar:', productoData);
+      
       await handleAddProduct(productoData);
       onCancel();
     } catch (error) {
-      console.error('Error detallado:', error);
-      setError(error.message || 'Error al crear el producto');
+      console.error('Error completo:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        datos: formData
+      });
+      setError(error.response?.data?.message || error.message || 'Error al crear el producto');
     } finally {
       setIsLoading(false);
     }
