@@ -5,12 +5,12 @@ import '../styles/Categorys.css';
 
 const Categorys = () => {
   const categories = [
-    { name: 'Computadoras', icon: <FaLaptop size={24} />, path: '/category/computers' },
-    { name: 'Gaming', icon: <FaGamepad size={24} />, path: '/category/gaming' },
-    { name: 'Celulares', icon: <FaMobileAlt size={24} />, path: '/category/phones' },
-    { name: 'Audio', icon: <FaHeadphones size={24} />, path: '/category/audio' },
-    { name: 'Cámaras', icon: <FaCamera size={24} />, path: '/category/cameras' },
-    { name: 'Tablets', icon: <FaTabletAlt size={24} />, path: '/category/tablets' },
+    { name: 'Electrónica', icon: <FaLaptop size={24} />, path: '/category/computers' },
+    { name: 'Ropa', icon: <FaGamepad size={24} />, path: '/category/gaming' },
+    { name: 'Hogar', icon: <FaMobileAlt size={24} />, path: '/category/phones' },
+    { name: 'Deportes', icon: <FaHeadphones size={24} />, path: '/category/audio' },
+    { name: 'Jueguetes', icon: <FaCamera size={24} />, path: '/category/cameras' },
+    { name: 'Otros', icon: <FaTabletAlt size={24} />, path: '/category/tablets' },
   ];
 
   return (

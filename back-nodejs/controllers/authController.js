@@ -1,6 +1,7 @@
 // Importaciones.
 const bcrypt = require('bcrypt'); // Para encriptar la contraseña.
 const jwt = require('jsonwebtoken'); //Para crear tokens de autenticación.
+require('dotenv').config();
 const db = require('../config/db'); // Para interacturar con la base de datos.
 
 //Registro del usuario.
@@ -36,18 +37,22 @@ const register = async (req, res) => {
 };
 
 const generateTokens = (userId) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET no está definida en las variables de entorno');
+  }
+
   const accessToken = jwt.sign(
-    { userId }, 
-    process.env.JWT_SECRET, 
+    { userId: userId },
+    process.env.JWT_SECRET,
     { expiresIn: '1h' }
   );
-  
+
   const refreshToken = jwt.sign(
-    { userId }, 
-    process.env.REFRESH_SECRET, 
+    { userId: userId },
+    process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
-  
+
   return { accessToken, refreshToken };
 };
 
