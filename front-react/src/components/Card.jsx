@@ -26,7 +26,7 @@ const Card = ({ products }) => {
             </div>
             <div className="card-body">
               <h5 className="card-title">{product.nombre_producto}</h5>
-              <p className="text-center">{product.descripcion}</p>
+              {/* <p className="text-center">{product.descripcion}</p> */}
               <p className="card-text text-center"><strong>Precio: ${product.precio}</strong></p>
               <div className="d-flex justify-content-evenly">
                 <Link to={`/post-details/${product.id_producto}`}><button className="btn btn-dark">

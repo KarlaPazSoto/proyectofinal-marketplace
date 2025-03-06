@@ -50,7 +50,7 @@ function AppRoutes() {
           <Route path="/card" element={<Card />} />
           <Route path="/pagination" element={<Pagination />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/post-details" element={<PostDetails />} />
+          <Route path="/post-details/:id" element={<PostDetails />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/categorys" element={<Categorys />} />
           <Route path="/user-info" element={<UserInfo />} />

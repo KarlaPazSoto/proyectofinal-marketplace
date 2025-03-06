@@ -218,8 +218,26 @@ export const productService = {
     }
   },
   getProductById: async (id) => {
-    const response = await api.get(`/productos/${id}`);
-    return response.data;
+    try {
+      console.log('Solicitando producto con ID:', id);
+      const response = await api.get(`/productos/${id}`);
+      
+      // Asegurarnos de que los datos tienen el formato correcto
+      const producto = response.data.data;
+      return {
+        id: producto.id_producto,
+        nombre_producto: producto.nombre_producto,
+        descripcion: producto.descripcion,
+        precio: producto.precio,
+        stock: producto.stock,
+        categoria: producto.categoria,
+        imagenes: Array.isArray(producto.imagenes) ? producto.imagenes : [producto.imagenes],
+        estado: producto.estado
+      };
+    } catch (error) {
+      console.error('Error en getProductById:', error);
+      throw error;
+    }
   },
   createProduct: async (productData) => {
     try {

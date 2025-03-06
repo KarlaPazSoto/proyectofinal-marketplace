@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/Pagination.css";
 
 const Pagination = ({ currentPage, totalPages, paginate }) => {
   const pageNumbers = [];
@@ -9,7 +10,7 @@ const Pagination = ({ currentPage, totalPages, paginate }) => {
 
   return (
     <nav aria-label="Page navigation example">
-      <ul className="pagination justify-content-center">
+      <ul className="pagination justify-content-center mt-5 mb-5">
         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
           <button className="page-link" onClick={() => paginate(currentPage - 1)} aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
