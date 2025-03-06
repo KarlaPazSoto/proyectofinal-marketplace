@@ -217,6 +217,17 @@ export const productService = {
       throw error;
     }
   },
+
+  getPublicProducts: async () => {
+    try {
+      const response = await api.get('/productos');
+      return response.data.data || [];
+    } catch (error) {
+      console.error('Error obteniendo productos públicos:', error);
+      throw error;
+    }
+  },
+
   getProductById: async (id) => {
     try {
       console.log('Solicitando producto con ID:', id);
@@ -239,6 +250,7 @@ export const productService = {
       throw error;
     }
   },
+
   createProduct: async (productData) => {
     try {
       const response = await api.post('/productos', productData);
@@ -248,6 +260,7 @@ export const productService = {
       throw error;
     }
   },
+
   updateProduct: async (productId, productData) => {
     try {
       console.log('Enviando petición de actualización:', {
@@ -281,6 +294,7 @@ export const productService = {
       throw error;
     }
   },
+
   deleteProduct: async (productId) => {
     try {
       await api.delete(`/productos/${productId}`);
@@ -289,10 +303,12 @@ export const productService = {
       throw error;
     }
   },
+
   getProductsByCategory: async (category) => {
     const response = await api.get(`/productos/categoria/${category}`);
     return response.data;
   },
+
   searchProducts: async (query) => {
     const response = await api.get(`/productos/search?q=${query}`);
     return response.data;

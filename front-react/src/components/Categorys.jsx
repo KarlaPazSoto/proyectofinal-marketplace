@@ -1,16 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaLaptop, FaGamepad, FaMobileAlt, FaHeadphones, FaCamera, FaTabletAlt } from 'react-icons/fa';
+import { FaLaptop, FaTshirt, FaHome, FaRunning, FaGamepad, FaEllipsisH, FaThLarge } from 'react-icons/fa';
 import '../styles/Categorys.css';
 
 const Categorys = () => {
   const categories = [
-    { name: 'Electrónica', icon: <FaLaptop size={24} />, path: '/category/computers' },
-    { name: 'Ropa', icon: <FaGamepad size={24} />, path: '/category/gaming' },
-    { name: 'Hogar', icon: <FaMobileAlt size={24} />, path: '/category/phones' },
-    { name: 'Deportes', icon: <FaHeadphones size={24} />, path: '/category/audio' },
-    { name: 'Jueguetes', icon: <FaCamera size={24} />, path: '/category/cameras' },
-    { name: 'Otros', icon: <FaTabletAlt size={24} />, path: '/category/tablets' },
+    { name: 'Todos los productos', icon: <FaThLarge size={24} />, path: '/gallery' },
+    { name: 'Electrónica', icon: <FaLaptop size={24} />, path: '/category/electronica' },
+    { name: 'Ropa', icon: <FaTshirt size={24} />, path: '/category/ropa' },
+    { name: 'Hogar', icon: <FaHome size={24} />, path: '/category/hogar' },
+    { name: 'Deportes', icon: <FaRunning size={24} />, path: '/category/deportes' },
+    { name: 'Juguetes', icon: <FaGamepad size={24} />, path: '/category/juguetes' },
+    { name: 'Otros', icon: <FaEllipsisH size={24} />, path: '/category/otros' },
   ];
 
   return (
