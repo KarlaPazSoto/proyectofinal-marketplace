@@ -1,14 +1,30 @@
 import React from "react";
-import useProducts from "../hooks/useProducts";
 import "../styles/Carousel.css";
 
 const Carousel = () => {
-  const { products, loading, error } = useProducts();
-
-  if (loading) return <div>Cargando productos...</div>;
-  if (error) return <div>Error al cargar productos: {error.message}</div>;
-
-  console.log("Productos:", products);
+  // Array estático de imágenes para el carrusel
+  const carouselImages = [
+    {
+      id: 1,
+      url: "https://res.cloudinary.com/dvhwvtykz/image/upload/v1741231510/tradz1_rv3yyl.webp",
+      alt: "Descuento por 3 días"
+    },
+    {
+      id: 2,
+      url: "https://res.cloudinary.com/dvhwvtykz/image/upload/v1741231510/tradz2_vmfcfv.webp",
+      alt: "Black Friday"
+    },
+    {
+      id: 3,
+      url: "https://res.cloudinary.com/dvhwvtykz/image/upload/v1741231512/tradz4_jpvgko.webp",
+      alt: "Felices Pascuas"
+    },
+    {
+      id: 4,
+      url: "https://res.cloudinary.com/dvhwvtykz/image/upload/v1741231511/tradz3_xdkx8c.webp",
+      alt: "Ventas de Halloween"
+    }
+  ];
 
   return (
     <div>
@@ -16,19 +32,20 @@ const Carousel = () => {
         id="carouselExampleAutoplaying"
         className="carousel slide"
         data-bs-ride="carousel"
-        data-bs-interval="2000"
+        data-bs-interval="3000"
       >
         <div className="carousel-inner carousel-image">
-          {products.map((product, index) => (
-            product.imagenes.map((imagen, imgIndex) => (
-              <div key={`${product.id_producto}-${imgIndex}`} className={`carousel-item ${index === 0 && imgIndex === 0 ? "active" : ""}`}>
-                <img
-                  src={imagen}
-                  className="img-fluid"
-                  alt={product.nombre_producto}
-                />
-              </div>
-            ))
+          {carouselImages.map((image, index) => (
+            <div 
+              key={image.id} 
+              className={`carousel-item ${index === 0 ? "active" : ""}`}
+            >
+              <img
+                src={image.url}
+                className="img-fluid"
+                alt={image.alt}
+              />
+            </div>
           ))}
         </div>
         <button
