@@ -32,7 +32,7 @@ const Card = ({ products }) => {
                 <Link to={`/post-details/${product.id_producto}`}><button className="btn btn-dark">
                   Ver más
                 </button></Link>
-                <button className="btn btn-dark" onClick={() => handleAdd(product)}>Añadir</button>
+                <button className="btn btn-dark mt-3" onClick={() => handleAdd(product)}>Añadir al carrito</button>
               </div>
             </div>
           </div>

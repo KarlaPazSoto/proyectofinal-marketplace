@@ -23,11 +23,11 @@ function App() {
       <div className="d-flex flex-column min-vh-100 all-body">
         {/* Navbar solo se oculta en "/principal" */}
         {!isPrincipalRoute && <Navbar />}
-        <main className="flex-grow-1">
+        <div className="flex-grow-1">
           {/* Header se oculta en "/principal", "/profile" y "/cart" */}
           {!hideHeader && <Header />}
           <AppRoutes />
-        </main>
+        </div>
         {/* Footer solo se oculta en "/principal" */}
         {!isPrincipalRoute && <Footer />}
       </div>

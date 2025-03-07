@@ -143,13 +143,17 @@ export const authService = {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
   },
-
+  
   getProfile: async () => {
     try {
       const response = await api.get('/auth/profile');
       return response.data;
     } catch (error) {
-      console.error('Error obteniendo perfil:', error);
+      console.error('Error obteniendo perfil:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        estado: error.response?.status
+      });
       throw error;
     }
   },
@@ -184,7 +188,12 @@ export const authService = {
       const response = await api.put('/auth/profile', userData);
       return response.data;
     } catch (error) {
-      console.error('Error actualizando perfil:', error);
+      console.error('Error actualizando perfil:', {
+        mensaje: error.message,
+        respuesta: error.response?.data,
+        estado: error.response?.status,
+        datos: userData
+      });
       throw error;
     }
   },

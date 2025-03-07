@@ -1,12 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { productService } from '../../services/api';
+import { CartContext } from '../../contexts/CartContext';
+import { UserContext } from '../../contexts/UserContext';
 
 const PostDetails = () => {
+  const { handleAddToCart } = useContext(CartContext);
+  const { profile, token } = useContext(UserContext);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const handleAdd = (product) => {
+    if (!token) {
+      alert('Debes iniciar sesión para agregar productos al carrito');
+      return;
+    }
+    console.log("Token actual:", token);
+    console.log("Perfil actual:", profile);
+    console.log("Producto a agregar:", product);
+    handleAddToCart({ productId: product.id_producto, quantity: 1 });
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,6 +66,7 @@ const PostDetails = () => {
               <p className="card-text"><strong>Precio: </strong>${product.precio}</p>
               <p className="card-text"><strong>Stock: </strong>{product.stock}</p>
               <p className="card-text"><small className="text-muted">Categoría: {product.categoria}</small></p>
+              <button className="btn btn-dark mt-3" onClick={() => handleAdd(product)}>Añadir al carrito</button>
             </div>
           </div>
         </div>

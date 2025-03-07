@@ -9,7 +9,7 @@ const useCart = () => {
   const [error, setError] = useState(null);
   const { token } = useContext(UserContext);
 
-  // Función auxiliar para manejar errores
+// Función auxiliar para manejar errores
   const handleError = (error, customMessage) => {
     const errorMessage = error.response?.data?.error || customMessage;
     setError(errorMessage);
@@ -40,6 +40,7 @@ const useCart = () => {
 
     setLoading(true);
     try {
+      console.log(product);
       const result = await cartService.addToCart(product.id_producto, 1);
       setCart([...cart, result]);
       alert('Producto agregado al carrito exitosamente');

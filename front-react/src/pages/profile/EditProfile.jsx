@@ -1,25 +1,26 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../contexts/UserContext';
-import { authService } from '../../services/api';
-import '../../styles/EditProfile.css';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
+import { authService } from "../../services/api";
+import "../../styles/EditProfile.css";
 
 const EditProfile = () => {
   const { profile, setProfile } = useContext(UserContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nombre: profile?.nombre || '',
-    email: profile?.email || '',
-    telefono: profile?.telefono || '',
-    direccion: profile?.direccion || ''
+    nombre: profile?.nombre || "",
+    email: profile?.email || "",
+    telefono: profile?.telefono || "",
+    direccion: profile?.direccion || "",
+    img_url: profile?.img_url || ""
   });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -27,20 +28,20 @@ const EditProfile = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      console.log('Datos a enviar:', formData);
+      console.log("Datos a enviar:", formData);
       const updatedProfile = await authService.updateProfile(formData);
-      console.log('Respuesta del servidor:', updatedProfile);
+      console.log("Respuesta del servidor:", updatedProfile);
       setProfile(updatedProfile);
-      alert('Perfil actualizado exitosamente');
-      navigate('/profile');
+      alert("Perfil actualizado exitosamente");
+      navigate("/profile");
     } catch (error) {
-      console.error('Error detallado:', {
+      console.error("Error detallado:", {
         mensaje: error.message,
         respuesta: error.response?.data,
         estado: error.response?.status,
-        datos: formData
+        datos: formData,
       });
-      alert('Error al actualizar el perfil');
+      alert("Error al actualizar el perfil");
     } finally {
       setIsLoading(false);
     }
@@ -53,10 +54,12 @@ const EditProfile = () => {
           <div className="card shadow">
             <div className="card-body">
               <h2 className="card-title text-center mb-4">Editar Perfil</h2>
-              
+
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="nombre" className="form-label">Nombre completo</label>
+                  <label htmlFor="nombre" className="form-label">
+                    Nombre completo
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -69,7 +72,9 @@ const EditProfile = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
+                  <label htmlFor="email" className="form-label">
+                    Email
+                  </label>
                   <input
                     type="email"
                     className="form-control"
@@ -82,7 +87,9 @@ const EditProfile = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="telefono" className="form-label">Teléfono</label>
+                  <label htmlFor="telefono" className="form-label">
+                    Teléfono
+                  </label>
                   <input
                     type="tel"
                     className="form-control"
@@ -95,7 +102,24 @@ const EditProfile = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="direccion" className="form-label">Dirección</label>
+                  <label htmlFor="img_url" className="form-label">
+                    URL de la imagen
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="img_url"
+                    name="img_url"
+                    value={formData.img_url}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="direccion" className="form-label">
+                    Dirección
+                  </label>
                   <textarea
                     className="form-control"
                     id="direccion"
@@ -108,22 +132,28 @@ const EditProfile = () => {
                 </div>
 
                 <div className="d-grid gap-2">
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="btn btn-primary"
                     disabled={isLoading}
                   >
                     {isLoading ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
                         Actualizando...
                       </>
-                    ) : 'Guardar cambios'}
+                    ) : (
+                      "Guardar cambios"
+                    )}
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="btn btn-outline-secondary"
-                    onClick={() => navigate('/profile')}
+                    onClick={() => navigate("/profile")}
                   >
                     Cancelar
                   </button>
