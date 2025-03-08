@@ -4,6 +4,8 @@ import { UserContext, UserProvider } from "./contexts/UserContext";
 import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/app.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -24,13 +26,16 @@ function App() {
         {/* Navbar solo se oculta en "/principal" */}
         {!isPrincipalRoute && <Navbar />}
         <div className="flex-grow-1">
-          {/* Header se oculta en "/principal", "/profile" y "/cart" */}
+          {/* Header se oculta en ciertas rutas */}
           {!hideHeader && <Header />}
           <AppRoutes />
         </div>
         {/* Footer solo se oculta en "/principal" */}
         {!isPrincipalRoute && <Footer />}
       </div>
+
+      {/* ToastContainer global para toda la aplicación */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover draggable theme="light" />
     </UserProvider>
   );
 }
