@@ -70,7 +70,7 @@ const AddProduct = ({ handleAddProduct, onCancel }) => {
 
   return (
     <Card className="shadow-sm">
-      <Card.Header className="bg-primary text-white">
+      <Card.Header className="header-card">
         <h3 className="mb-0">Agregar Nuevo Producto</h3>
       </Card.Header>
       <Card.Body>
