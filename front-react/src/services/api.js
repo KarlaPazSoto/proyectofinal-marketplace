@@ -426,28 +426,36 @@ export const cartService = {
 // Servicios de descuentos
 export const discountService = {
   getDiscountCodes: async () => {
-    const response = await api.get('/discounts');
-    return response.data;
+    try {
+      const response = await api.get('/discounts');
+      return response.data;
+    } catch (error) {
+      console.error('Error al obtener los códigos de descuento:', error);
+      throw new Error('No se pudieron obtener los códigos de descuento.');
+    }
   },
+
   validateDiscountCode: async (code) => {
     try {
       const response = await api.get(`/discounts/validate/${code}`);
       return response.data;
     } catch (error) {
       console.error('Error al validar el código de descuento:', error);
-      throw error;
+      throw new Error('Código de descuento inválido o expirado.');
     }
   },
+
   saveDiscountCode: async (discountData) => {
     try {
       const response = await api.post('/discounts/save', discountData);
       return response.data;
     } catch (error) {
-      console.error('Error al guardar el código de descuento:', error);
-      throw error;
+      console.error('Error al guardar el código de descuento en API:', error);
+      throw new Error('No se pudo guardar el código de descuento.');
     }
   },
 };
+
 
 // Servicios de resumen de compra
 export const purchaseService = {

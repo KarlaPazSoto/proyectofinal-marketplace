@@ -30,22 +30,20 @@ console.error('Detalles del error:', {
     };
 
     fetchProfile();
-  }, [setProfile]);
+  }, []);
 
   const handleSaveDiscountCode = async (e) => {
     e.preventDefault();
     try {
       const discountData = {
         userId: profile.id_usuario,
-        code: discountCode,
-        valor: discountValue,
+        codigo: discountCode,
+        descuento: discountValue,
         tipo_descuento: discountType,
       };
       await discountService.saveDiscountCode(discountData);
       setMessage('Código de descuento guardado exitosamente');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000); // Recargar la página después de 1 segundo
+      
     } catch (error) {
       console.error('Error al guardar el código de descuento:', error);
       setMessage('Error al guardar el código de descuento');
