@@ -5,7 +5,7 @@ import '../../styles/Profile.css'
 
 const ProfileActions = () => {
   const navigate = useNavigate();
-  const { handleLogout } = useContext(UserContext);
+  const { profile, handleLogout } = useContext(UserContext);
 
   const handleCerrarSesion = () => {
     handleLogout();
@@ -18,9 +18,11 @@ const ProfileActions = () => {
           <button className='btn-actions'>Editar perfil</button>
           </Link>
 
-          <Link to='/feed'>
+          {profile?.tipo_usuario === 'vendedor' && (
+        <Link to='/feed'>
           <button className='btn-actions'>Mis publicaciones</button>
-          </Link>
+        </Link>
+      )}
 
           {/* <Link to='/purchases'>
           <button className='btn-actions'>Mis compras</button>

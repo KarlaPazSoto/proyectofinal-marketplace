@@ -10,11 +10,11 @@ const getProductImage = (product) => {
     }
     // Si el producto tiene una única imagen en formato string
     else if (typeof product.imagenes === 'string') {
-      return product.imagenes;
+      return product.imagenes.replace(/\\/g, '/');
     }
     // Si el producto tiene la imagen en otro formato (por ejemplo, imagen_url)
     else if (product.imagen_url) {
-      return product.imagen_url;
+      return product.imagen_url.replace(/\\/g, '/');
     }
     // Imagen por defecto si no hay imagen disponible
     return '/ruta/a/imagen/por/defecto.jpg';

@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/api';
 import { UserContext } from '../../contexts/UserContext';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -125,6 +126,7 @@ const Register = () => {
             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           ) : 'Registrarse'}
         </button>
+        <p>¿No tienes cuenta? <Link to='/login'>Iniciar sesión</Link></p>
       </form>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
-import { cartService } from "../services/api";
+import { cartService, discountService } from "../services/api";
 
 const PurchaseSummary = ({ cartItems }) => {
   const { user } = useContext(UserContext);
@@ -18,13 +18,22 @@ const PurchaseSummary = ({ cartItems }) => {
     if (cartItems && cartItems.length > 0) {
       const numberOfProducts = cartItems.reduce((sum, item) => sum + item.cantidad, 0);
       const subtotal = cartItems.reduce((sum, item) => sum + (item.cantidad * item.precio_unitario), 0);
-      
+
+      let discountAmount = 0;
+      if (appliedDiscount) {
+        if (appliedDiscount.tipo_descuento === '%') {
+          discountAmount = (subtotal * appliedDiscount.valor) / 100;
+        } else if (appliedDiscount.tipo_descuento === 'CLP') {
+          discountAmount = appliedDiscount.valor;
+        }
+      }
+
       setSummary({
         numberOfProducts,
         subtotal,
-        discounts: appliedDiscount?.amount || 0,
+        discounts: discountAmount,
         shippingCost: 3000,
-        total: subtotal + 3000 - (appliedDiscount?.amount || 0)
+        total: subtotal + 3000 - discountAmount
       });
     } else {
       setSummary({
@@ -39,7 +48,9 @@ const PurchaseSummary = ({ cartItems }) => {
 
   const applyDiscountCode = async () => {
     try {
-      alert('Funcionalidad de descuentos en desarrollo');
+      const discount = await discountService.validateDiscountCode(discountCode);
+      setAppliedDiscount(discount);
+      alert('Código de descuento aplicado exitosamente');
     } catch (error) {
       console.error('Error al aplicar descuento:', error);
       alert('Error al aplicar el código de descuento');
@@ -47,11 +58,13 @@ const PurchaseSummary = ({ cartItems }) => {
   };
 
   if (!user) {
-    return <div className="card border-danger p-3">
-      <div className="card-body">
-        <p className="text-center">Inicia sesión para ver el resumen</p>
+    return (
+      <div className="card border-danger p-3">
+        <div className="card-body">
+          <p className="text-center">Inicia sesión para ver el resumen</p>
+        </div>
       </div>
-    </div>;
+    );
   }
 
   return (

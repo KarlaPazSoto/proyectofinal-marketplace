@@ -66,7 +66,7 @@ const PostDetails = () => {
               <p className="card-text"><strong>Precio: </strong>${product.precio}</p>
               <p className="card-text"><strong>Stock: </strong>{product.stock}</p>
               <p className="card-text"><small className="text-muted">Categoría: {product.categoria}</small></p>
-              <button className="btn btn-dark mt-3" onClick={() => handleAdd(product)}>Añadir al carrito</button>
+              <button className="btn btn-dark mt-3" onClick={() => handleAdd(product)}>Añadir</button>
             </div>
           </div>
         </div>

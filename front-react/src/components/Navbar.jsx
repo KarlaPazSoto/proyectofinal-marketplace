@@ -6,7 +6,7 @@ import logo from "../assets/img/logo-horizontal.png";
 import Search from "../pages/search/Search";
 
 const Navbar = () => {
-  const { handleLogout } = useContext(UserContext); // Obtiene la función de logout
+  const { token, handleLogout } = useContext(UserContext); // Obtiene la función de logout
   const navigate = useNavigate(); // Hook para redireccionar
 
   const logoutAndRedirect = () => {
@@ -57,9 +57,11 @@ const Navbar = () => {
               <Link to="/cart" className="nav-link">
                 Carrito 🛒
               </Link>
-              <button onClick={logoutAndRedirect} className="btn-cerrar-sesion">
-                Cerrar Sesión
-              </button>
+              {token && (
+                <button onClick={logoutAndRedirect} className="btn-cerrar-sesion">
+                  Cerrar Sesión
+                </button>
+              )}
             </div>
           </div>
         </div>

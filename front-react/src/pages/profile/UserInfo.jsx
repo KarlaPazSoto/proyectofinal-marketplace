@@ -11,6 +11,7 @@ const UserInfo = () => {
       <p><b>Número de teléfono:</b> {profile.telefono}</p>
       <p><b>Dirección:</b> {profile.direccion}</p>
       <p><b>Fecha de registro:</b> {profile.fecha_registro}</p>
+      <p><b>Tipo de usuario:</b> {profile.tipo_usuario}</p>
     </div>
   );
 };

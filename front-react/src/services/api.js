@@ -429,6 +429,24 @@ export const discountService = {
     const response = await api.get('/discounts');
     return response.data;
   },
+  validateDiscountCode: async (code) => {
+    try {
+      const response = await api.get(`/discounts/validate/${code}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error al validar el código de descuento:', error);
+      throw error;
+    }
+  },
+  saveDiscountCode: async (discountData) => {
+    try {
+      const response = await api.post('/discounts/save', discountData);
+      return response.data;
+    } catch (error) {
+      console.error('Error al guardar el código de descuento:', error);
+      throw error;
+    }
+  },
 };
 
 // Servicios de resumen de compra
