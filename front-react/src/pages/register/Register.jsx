@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/api';
 import { UserContext } from '../../contexts/UserContext';
 import { Link } from 'react-router-dom';
+import '../../styles/Register.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -33,102 +36,119 @@ const Register = () => {
     try {
       const response = await authService.register(formData);
       if (response.token) {
-        const profile = await authService.getProfile();
-        setProfile(profile);
-        navigate('/');
+        toast.success('¡Registro exitoso! Serás redirigido al inicio de sesión...', {
+          position: "top-center",
+          autoClose: 2000
+        });
+
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       }
     } catch (error) {
-      setError(error.response?.data?.error || 'Error en el registro');
+      toast.error(error.response?.data?.error || 'Error en el registro', {
+        position: "top-center",
+        autoClose: 3000
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="container col-4 mt-5">
-      <h2>Registro</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Nombre</label>
-          <input
-            type="text"
-            name="nombre"
-            className="form-control"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input
-            type="email"
-            name="email"
-            className="form-control"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Teléfono</label>
-          <input
-            type="tel"
-            name="telefono"
-            className="form-control"
-            value={formData.telefono}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Dirección</label>
-          <input
-            type="text"
-            name="direccion"
-            className="form-control"
-            value={formData.direccion}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Tipo de Usuario</label>
-          <select
-            name="tipo_usuario"
-            className="form-control"
-            value={formData.tipo_usuario}
-            onChange={handleChange}
-            required
+    <>
+      <ToastContainer />
+      <div className="container col-12 col-md-8 col-lg-6 mt-5 mb-5">
+        <h2 className='text-center mb-5'>Completa los datos para registrarte</h2>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <form className='col-10 mx-auto' onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Nombre</label>
+            <span className='text-danger'>*</span>
+            <input
+              type="text"
+              name="nombre"
+              className="form-control"
+              value={formData.nombre}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <span className='text-danger'>*</span>
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Contraseña</label>
+            <span className='text-danger'>*</span>
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Teléfono</label>
+            <span className='text-danger'>*</span>
+            <input
+              type="tel"
+              name="telefono"
+              className="form-control"
+              value={formData.telefono}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Dirección</label>
+            <span className='text-danger'>*</span>
+            <input
+              type="text"
+              name="direccion"
+              className="form-control"
+              value={formData.direccion}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Tipo de Usuario</label>
+            <span className='text-danger'>*</span>
+            <select
+              name="tipo_usuario"
+              className="form-control"
+              value={formData.tipo_usuario}
+              onChange={handleChange}
+              required
+            >
+              <option className='tipo-usuario' value="comprador">Comprador</option>
+              <option className='tipo-usuario' value="vendedor">Vendedor</option>
+            </select>
+          </div>
+          <button 
+            type="submit" 
+            className="btn btn-primary mx-auto d-block mt-4 mb-2"
+            disabled={isLoading}
           >
-            <option value="comprador">Comprador</option>
-            <option value="vendedor">Vendedor</option>
-          </select>
-        </div>
-        <button 
-          type="submit" 
-          className="btn btn-primary"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          ) : 'Registrarse'}
-        </button>
-        <p>¿No tienes cuenta? <Link to='/login'>Iniciar sesión</Link></p>
-      </form>
-    </div>
+            {isLoading ? (
+              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            ) : 'Registrarse'}
+          </button>
+          <p className='text-center'>¿Ya tienes una cuenta? <Link to='/login'>Iniciar sesión</Link></p>
+        </form>
+      </div>
+    </>
   );
 };
 
