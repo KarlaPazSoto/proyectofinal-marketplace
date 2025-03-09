@@ -31,36 +31,50 @@ const Navbar = () => {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            
+
             <Link to="/" className="navbar-brand m-0">
-              <img src={logo} alt="logo" className="logo-navbar" style={{ height: '40px' }} />
+              <img src={logo} alt="logo" className="logo-navbar" style={{ height: "40px" }} />
             </Link>
           </div>
 
           {/* Contenedor desktop */}
           <div className="d-none d-lg-flex w-100 justify-content-between align-items-center">
-            <Link to="/" className="navbar-brand" style={{ width: '20%' }}>
+            <Link to="/" className="navbar-brand" style={{ width: "20%" }}>
               <img src={logo} alt="logo" className="logo-navbar ms-4" />
             </Link>
-            
-            <div className="mx-auto" style={{ width: '50%' }}>
+
+            <div className="mx-auto" style={{ width: "50%" }}>
               <Search />
             </div>
           </div>
 
           {/* Menú desplegable */}
-          <div className="collapse navbar-collapse" id="navbarNavAltMarkup" style={{ width: '25%' }}>
+          <div className="collapse navbar-collapse" id="navbarNavAltMarkup" style={{ width: "25%" }}>
             <div className="navbar-nav">
-              <Link to="/profile" className="nav-link">
-                Perfil
-              </Link>
-              <Link to="/cart" className="nav-link">
-                Carrito 🛒
-              </Link>
+              {/* Solo mostrar estos enlaces si el usuario está autenticado */}
               {token && (
-                <button onClick={logoutAndRedirect} className="btn-cerrar-sesion">
-                  Cerrar Sesión
-                </button>
+                <>
+                  <Link to="/profile" className="nav-link">
+                    Perfil
+                  </Link>
+                  <Link to="/cart" className="nav-link">
+                    Carrito 🛒
+                  </Link>
+                  <button onClick={logoutAndRedirect} className="btn-cerrar-sesion">
+                    Cerrar Sesión
+                  </button>
+                </>
+              )}
+              {/* Si NO está autenticado, mostrar solo login */}
+              {!token && (
+                <>
+                <Link to="/login" className="nav-link">
+                  Iniciar Sesión
+                </Link>
+                <Link to="/register" className="nav-link">
+                  Registrarse
+                </Link>
+                </>
               )}
             </div>
           </div>
