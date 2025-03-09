@@ -7,7 +7,7 @@ const ProfileImage = () => {
 
   return (
     <div className="container mb-3">
-       <img src={profile.img_url} alt={profile.nombre} className='img-perfil' />
+       <img src={profile.imagen_url} alt={profile.nombre} className='img-perfil' />
     </div>
   );
 };
