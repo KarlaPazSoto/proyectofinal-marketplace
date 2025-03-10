@@ -20,14 +20,17 @@ const PostDetails = () => {
     console.log("Token actual:", token);
     console.log("Perfil actual:", profile);
     console.log("Producto a agregar:", product);
-    handleAddToCart({ productId: product.id_producto, quantity: 1 });
-  };
+    console.log("bandera 2", product.id);
+    handleAddToCart({ id_producto: product.id, quantity: 1 });
 
+  };
+                                                               
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
         const data = await productService.getProductById(id);
+        console.log('Producto obtenido:', data); // Log para verificar la estructura del producto
         setProduct(data);
       } catch (error) {
         console.error('Error al obtener el producto:', error);
@@ -66,7 +69,7 @@ const PostDetails = () => {
               <p className="card-text"><strong>Precio: </strong>${product.precio}</p>
               <p className="card-text"><strong>Stock: </strong>{product.stock}</p>
               <p className="card-text"><small className="text-muted">Categoría: {product.categoria}</small></p>
-              <button className="btn btn-dark mt-3" onClick={() => handleAdd(product)}>Añadir</button>
+              <button className="btn btn-dark mt-3" onClick={() => handleAdd(product)}>Añadir al carrito</button>
             </div>
           </div>
         </div>

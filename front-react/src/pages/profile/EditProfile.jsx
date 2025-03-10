@@ -12,7 +12,7 @@ const EditProfile = () => {
     email: profile?.email || "",
     telefono: profile?.telefono || "",
     direccion: profile?.direccion || "",
-    imagen_url: profile?.imagen_url || ""
+    img_url: profile?.img_url || ""
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -102,15 +102,15 @@ const EditProfile = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="imagen_url" className="form-label">
+                  <label htmlFor="img_url" className="form-label">
                     URL de la imagen
                   </label>
                   <input
                     type="text"
                     className="form-control"
-                    id="imagen_url"
-                    name="imagen_url"
-                    value={formData.imagen_url}
+                    id="img_url"
+                    name="img_url"
+                    value={formData.img_url}
                     onChange={handleChange}
                     required
                   />

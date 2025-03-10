@@ -111,7 +111,7 @@ const getProfile = async (req, res) => {
         telefono, 
         direccion, 
         tipo_usuario, 
-        imagen_url,
+        img_url,
         fecha_registro, 
         estado
       FROM usuarios 
@@ -136,19 +136,19 @@ const getProfile = async (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { nombre, email, telefono, imagen_url, direccion } = req.body;
+    const { nombre, email, telefono, img_url, direccion } = req.body;
 
     console.log('Datos recibidos en updateProfile:', {
       userId,
       nombre,
       email,
       telefono,
-      imagen_url,
+      img_url,
       direccion
     });
 
     // Validaciones
-    if (!nombre || !email || !telefono || !direccion || ! imagen_url) {
+    if (!nombre || !email || !telefono || !direccion || ! img_url) {
       console.log('Faltan campos requeridos');
       return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
@@ -178,11 +178,11 @@ const updateProfile = async (req, res) => {
            email = $2, 
            telefono = $3, 
            direccion = $4,
-           imagen_url = $5,
+           img_url = $5,
            fecha_actualizacion = NOW()
        WHERE id = $6 
-       RETURNING id, nombre, email, telefono, imagen_url, direccion, tipo_usuario, estado`,
-      [nombre, email, telefono, direccion, imagen_url, userId]
+       RETURNING id, nombre, email, telefono, img_url, direccion, tipo_usuario, estado`,
+      [nombre, email, telefono, direccion, img_url, userId]
     );
 
     console.log('Resultado de la actualización:', result.rows);
